@@ -23,7 +23,6 @@ import {
   ChevronRight,
   Check,
 } from "lucide-react";
-import ListView from "./ListView";
 
 const MOCK_DATA = {
   assignees: [
@@ -42,6 +41,72 @@ const MOCK_DATA = {
     { id: 3, name: "St. Mary's" },
   ],
   statuses: ["NEW COMING", "PLANNING AND DESIGN", "MANUFACTURING"],
+};
+
+// เพิ่มไว้ต่อจาก MOCK_DATA
+const CASES_DATA = {
+  "NEW COMING": [],
+  "PLANNING AND DESIGN": [
+    {
+      id: "case-124",
+      name: "Case 124 - Mandible reconstruction with fibula flap - Dr.นนท์ [รพ.ศิริราช]",
+      assignees: [
+        { id: 1, avatar: "/avatar1.jpg" },
+        { id: 2, avatar: "/avatar2.jpg" },
+      ],
+      dueDate: "Nov 6",
+      comments: 2,
+      caseCode: "124",
+      surgeon: "นพ วิชิตชนม์",
+      hospital: "โรงพยาบาลศิริราช",
+      tasks: [
+        {
+          id: "t1",
+          name: "Case 124 - Surgical Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation",
+          assignee: { id: 1, avatar: "/avatar1.jpg" },
+          completed: true,
+        },
+        {
+          id: "t2",
+          name: "Case 124 - Surgical guide design",
+          assignee: { id: 2, avatar: "/avatar2.jpg" },
+          dueDate: "Nov 6",
+        },
+        {
+          id: "t3",
+          name: "Case 124 - Reconstruction plate design",
+          assignee: { id: 1, avatar: "/avatar1.jpg" },
+        },
+        {
+          id: "t4",
+          name: "Case 124 - Mock up model fabrication (SLA)",
+          assignee: { id: 3, avatar: "/avatar3.jpg" },
+          tag: "polymer manufacturing",
+        },
+        {
+          id: "t5",
+          name: "Case 124 - Mandible cutting guide fabrication (SLA)",
+          assignee: { id: 3, avatar: "/avatar3.jpg" },
+          tag: "polymer manufacturing",
+        },
+        {
+          id: "t6",
+          name: "Case 124 - Titanium plate reconstruction fabrication",
+          assignees: [
+            { id: 4, avatar: "/avatar4.jpg" },
+            { id: 5, avatar: "/avatar5.jpg" },
+          ],
+          comments: 1,
+          tag: "metal manufacturing",
+        },
+        {
+          id: "t7",
+          name: "Case 124 - Delivery",
+          assignee: { id: 2, avatar: "/avatar2.jpg" },
+        },
+      ],
+    },
+  ],
 };
 
 const SearchableDropdown = ({ options, placeholder, value, onChange }) => {
@@ -254,11 +319,16 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
                           key={status}
                           className="w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                           onClick={() => {
-                            setFormData(prev => ({ ...prev, status }));
+                            setFormData((prev) => ({ ...prev, status }));
                             setShowStatusPopup(false);
                           }}
                         >
-                          <div className={`w-2 h-2 rounded-full ${status === formData.status ? 'bg-blue-400' : 'bg-gray-400'}`} />
+                          <div
+                            className={`w-2 h-2 rounded-full ${status === formData.status
+                              ? "bg-blue-400"
+                              : "bg-gray-400"
+                              }`}
+                          />
                           <span>{status}</span>
                         </button>
                       ))}
@@ -292,7 +362,7 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
                           key={assignee.id}
                           className="w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                           onClick={() => {
-                            setFormData(prev => ({ ...prev, assignee }));
+                            setFormData((prev) => ({ ...prev, assignee }));
                             setShowAssigneePopup(false);
                           }}
                         >
@@ -324,7 +394,10 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
                       className="p-1 border rounded-md text-sm"
                       value={formData.dueDate}
                       onChange={(e) => {
-                        setFormData(prev => ({ ...prev, dueDate: e.target.value }));
+                        setFormData((prev) => ({
+                          ...prev,
+                          dueDate: e.target.value,
+                        }));
                         setShowDatePicker(false);
                       }}
                     />
@@ -341,7 +414,9 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
                 placeholder="Case Code"
                 className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-md text-sm text-gray-600 w-32"
                 value={formData.caseCode}
-                onChange={(e) => setFormData(prev => ({ ...prev, caseCode: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, caseCode: e.target.value }))
+                }
               />
 
               {/* Surgeons Button */}
@@ -369,7 +444,7 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
                           key={surgeon.id}
                           className="w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                           onClick={() => {
-                            setFormData(prev => ({ ...prev, surgeon }));
+                            setFormData((prev) => ({ ...prev, surgeon }));
                             setShowSurgeonsPopup(false);
                           }}
                         >
@@ -406,7 +481,7 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
                           key={hospital.id}
                           className="w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                           onClick={() => {
-                            setFormData(prev => ({ ...prev, hospital }));
+                            setFormData((prev) => ({ ...prev, hospital }));
                             setShowHospitalsPopup(false);
                           }}
                         >
@@ -430,6 +505,256 @@ const CreateCaseModal = ({ isOpen, onClose }) => {
             Create Case
           </button>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const TopActions = () => {
+  return (
+    <>
+      <div className="h-12 bg-white border-b border-gray-200 flex items-center justify-between px-4">
+        <div className="flex items-center space-x-4">
+          <button className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm flex items-center space-x-2">
+            <Plus className="w-4 h-4" />
+            <span>Add Task</span>
+          </button>
+          <div className="flex items-center space-x-2">
+            <Filter className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+            <Settings className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+            <MoreHorizontal className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              className="pl-9 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-sm w-64"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center space-x-2 px-4 py-2 bg-white border-b border-gray-200">
+        <button className="flex items-center space-x-1 px-3 py-1.5 hover:bg-gray-100 rounded-md">
+          <span className="text-sm">Group:</span>
+          <span className="text-sm font-medium">Status</span>
+          <ChevronDown className="w-4 h-4" />
+        </button>
+
+        <button className="flex items-center space-x-1 px-2 py-1.5 text-sm hover:bg-gray-100 rounded-md">
+          <span>Subtasks:</span>
+          <span className="text-blue-600">Collapse all</span>
+        </button>
+
+        <button className="flex items-center space-x-1 px-2 py-1.5 text-sm hover:bg-gray-100 rounded-md">
+          <span>Columns</span>
+          <ChevronDown className="w-4 h-4" />
+        </button>
+      </div>
+    </>
+  );
+};
+
+const ListView = () => {
+  const [expandedGroups, setExpandedGroups] = useState({
+    "NEW COMING": true,
+    "PLANNING AND DESIGN": true,
+  });
+  const [expandedCases, setExpandedCases] = useState({});
+  const [completedTasks, setCompletedTasks] = useState({});
+
+  const statusColors = {
+    "NEW COMING": "gray",
+    "PLANNING AND DESIGN": "yellow",
+    MANUFACTURING: "blue",
+  };
+
+  const getProgressCircle = (status, count) => {
+    const color = statusColors[status];
+    const hasItems = count > 0;
+    const style = hasItems
+      ? { backgroundClip: "content-box", padding: "3px" }
+      : {};
+
+    return (
+      <div
+        className={`w-5 h-5 rounded-full border-2 border-${color}-400 ${hasItems ? `bg-${color}-400` : ""
+          }`}
+        style={style}
+      />
+    );
+  };
+
+  const renderTaskRow = (task, isSubtask = false) => {
+    const isCompleted = completedTasks[task.id];
+
+    return (
+      <div
+        className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 ${isSubtask ? "bg-gray-50" : ""
+          }`}
+      >
+        {/* คอลัมน์แรก (Name) */}
+        <div className="col-span-4 flex items-center min-w-0">
+          <div
+            className={`flex items-center space-x-3 ${isSubtask ? "pl-14" : ""} min-w-0 overflow-hidden`}
+          >
+            {!isSubtask && (
+              <ChevronRight
+                className={`flex-shrink-0 w-4 h-4 text-gray-400 cursor-pointer transform ${expandedCases[task.id] ? "rotate-90" : ""
+                  }`}
+                onClick={() =>
+                  setExpandedCases((prev) => ({
+                    ...prev,
+                    [task.id]: !prev[task.id],
+                  }))
+                }
+              />
+            )}
+            <div
+              className="flex-shrink-0 w-4 h-4 rounded-full border-2 cursor-pointer flex items-center justify-center"
+              style={{
+                backgroundColor: isCompleted ? "#22C55E" : "transparent",
+                borderColor: isCompleted ? "#22C55E" : "#D1D5DB",
+              }}
+              onClick={() =>
+                setCompletedTasks((prev) => ({
+                  ...prev,
+                  [task.id]: !prev[task.id],
+                }))
+              }
+            >
+              {isCompleted && (
+                <Check
+                  className="w-[10px] h-[10px] text-white"
+                  style={{
+                    strokeWidth: 3,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                  }}
+                />
+              )}
+            </div>
+            <span className="text-xs text-gray-700 truncate overflow-hidden">{task.name}</span>
+            {task.tag && (
+              <span className="px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded text-xs whitespace-nowrap">
+                {task.tag}
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="col-span-3 flex -space-x-1">
+          {(task.assignees || [task.assignee])
+            .filter(Boolean)
+            .map((assignee) => (
+              <div
+                key={assignee.id}
+                className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600"
+              >
+                {assignee.name ? assignee.name.charAt(0) : "?"}
+              </div>
+            ))}
+        </div>
+        <div className="col-span-1 text-xs text-blue-600">
+          {task.dueDate || "-"}
+        </div>
+        <div className="col-span-1 text-xs text-gray-500">
+          {task.comments || "-"}
+        </div>
+        <div className="col-span-1 text-xs font-medium text-gray-900">
+          {task.caseCode || "-"}
+        </div>
+        <div className="col-span-1 text-xs text-gray-600 truncate">
+          {task.surgeon || "-"}
+        </div>
+        <div className="col-span-1 text-xs text-gray-600 truncate">
+          {task.hospital || "-"}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex-1 p-6 bg-gray-50 overflow-auto">
+      <div className="space-y-4">
+        {Object.entries(CASES_DATA).map(([status, cases]) => (
+          <div
+            key={status}
+            className="bg-white rounded-lg border border-gray-200"
+          >
+            {/* Status Header */}
+            <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-100">
+              <div className="flex items-center space-x-3">
+                <ChevronDown
+                  className={`w-5 h-5 text-gray-500 cursor-pointer transform ${expandedGroups[status] ? "" : "-rotate-90"
+                    }`}
+                  onClick={() =>
+                    setExpandedGroups((prev) => ({
+                      ...prev,
+                      [status]: !prev[status],
+                    }))
+                  }
+                />
+                <div className="flex items-center space-x-2">
+                  <div
+                    className="w-5 h-5 rounded-full"
+                    style={{
+                      background:
+                        status === "PLANNING AND DESIGN"
+                          ? "#FFD700"
+                          : "#E5E7EB",
+                      opacity: 0.7,
+                    }}
+                  />
+                  <span className="font-semibold text-gray-800">{status}</span>
+                </div>
+              </div>
+              <span className="text-sm text-gray-500 font-medium">
+                {cases.length}
+              </span>
+            </div>
+
+            {expandedGroups[status] && (
+              <>
+                {/* Column Headers */}
+                <div className="grid grid-cols-12 gap-4 px-6 py-2 border-b text-xs text-gray-500">
+                  <div className="col-span-4">Name</div>
+                  <div className="col-span-3">Assignee</div>
+                  <div className="col-span-1">Due date</div>
+                  <div className="col-span-1">Comments</div>
+                  <div className="col-span-1">Case Code</div>
+                  <div className="col-span-1">Surgeons</div>
+                  <div className="col-span-1">Hospitals</div>
+                </div>
+
+                {/* Cases and Tasks */}
+                <div className="divide-y divide-gray-200">
+                  {cases.map((caseItem) => (
+                    <div key={caseItem.id}>
+                      {renderTaskRow(caseItem)}
+                      {expandedCases[caseItem.id] && (
+                        <div className="bg-gray-50">
+                          {caseItem.tasks.map((task) =>
+                            renderTaskRow(task, true)
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Add Case Button */}
+                <div className="p-2">
+                  <button className="flex items-center space-x-1 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md w-full">
+                    <Plus className="w-4 h-4" />
+                    <span>Add Case</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -518,7 +843,7 @@ const TestLayout = () => {
           <div className="h-14 px-4 border-b border-gray-200 flex items-center">
             <div className="flex items-center space-x-2">
               <img
-                src="https://cdn.discordapp.com/attachments/881006618911858728/1310597165076447282/Group_Logo.png?ex=6745cc39&is=67447ab9&hm=5db7a21d64219a63b53a283bbfb69ddba2ef8e546bfbebb130abdbe4314f217c&"
+                src="https://res.cloudinary.com/djgpgveds/image/upload/v1732822814/tsyb5mziqtu8mql1govz.png"
                 alt="OssFlow Logo"
                 className="w-8 h-8 object-contain"
               />
@@ -609,83 +934,11 @@ const TestLayout = () => {
             </div>
           </div>
 
-          {/* Toolbar */}
-          <div className="h-12 bg-white border-b border-gray-200 flex items-center justify-between px-4">
-            <div className="flex items-center space-x-4">
-              <button className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm flex items-center space-x-2">
-                <Plus className="w-4 h-4" />
-                <span>New Task</span>
-              </button>
-              <div className="flex items-center space-x-2">
-                <Filter className="w-4 h-4 text-gray-500" />
-                <Settings className="w-4 h-4 text-gray-500" />
-                <MoreHorizontal className="w-4 h-4 text-gray-500" />
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search tasks..."
-                  className="pl-9 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-sm w-64"
-                />
-              </div>
-            </div>
-          </div>
+          {/* Actions และ Toolbar */}
+          <TopActions />
 
           {/* List View */}
-          <div className="flex-1 p-6 bg-gray-50 overflow-auto">
-            <div className="bg-white rounded-lg border border-gray-200">
-              {/* Table Header */}
-              <div className="grid grid-cols-12 gap-4 px-4 py-3 border-b border-gray-200 bg-gray-50 text-sm font-medium text-gray-500">
-                <div className="col-span-4">Task Name</div>
-                <div className="col-span-2">Status</div>
-                <div className="col-span-2">Due Date</div>
-                <div className="col-span-2">Assignee</div>
-                <div className="col-span-2">Priority</div>
-              </div>
-
-              {/* Table Body */}
-              <div className="divide-y divide-gray-200">
-                {tasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className="grid grid-cols-12 gap-4 px-4 py-3 hover:bg-gray-50 items-center"
-                  >
-                    <div className="col-span-4 flex items-center space-x-2">
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-medium">{task.name}</span>
-                    </div>
-                    <div className="col-span-2">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                          task.status
-                        )}`}
-                      >
-                        {task.status}
-                      </span>
-                    </div>
-                    <div className="col-span-2 text-sm text-gray-500">
-                      {new Date(task.dueDate).toLocaleDateString()}
-                    </div>
-                    <div className="col-span-2 text-sm text-gray-500">
-                      {task.assignee}
-                    </div>
-                    <div className="col-span-2">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(
-                          task.priority
-                        )}`}
-                      >
-                        {task.priority}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <ListView />
         </div>
       </div>
       <CreateCaseModal
