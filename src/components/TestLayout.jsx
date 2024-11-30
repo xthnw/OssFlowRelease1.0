@@ -642,6 +642,7 @@ const ListView = () => {
     return initialExpanded;
   });
   const [completedTasks, setCompletedTasks] = useState({});
+  const [editingCell, setEditingCell] = useState(null);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
@@ -700,6 +701,30 @@ const ListView = () => {
     setTasksData(newData);
   };
 
+  const handleCellEdit = (taskId, field, value, status) => {
+    setTasksData(prev => {
+      const newData = JSON.parse(JSON.stringify(prev));
+      const taskList = newData[status];
+      const taskIndex = taskList.findIndex(t => t.id === taskId);
+
+      if (taskIndex !== -1) {
+        taskList[taskIndex][field] = value;
+      } else {
+        // Check in subtasks
+        for (const task of taskList) {
+          const subtaskIndex = task.subtasks?.findIndex(st => st.id === taskId);
+          if (subtaskIndex !== -1) {
+            task.subtasks[subtaskIndex][field] = value;
+            break;
+          }
+        }
+      }
+
+      return newData;
+    });
+    setEditingCell(null);
+  };
+
   const SortableTaskRow = ({
     task,
     isSubtask = false,
@@ -707,13 +732,60 @@ const ListView = () => {
     expandedTasks,
     setExpandedTasks,
     setCompletedTasks,
-    parentId
+    parentId,
+    status,
   }) => {
+    const handleDoubleClick = (e, field) => {
+      e.stopPropagation();
+      setEditingCell({ taskId: task.id, field });
+    };
+
+    const renderEditableCell = (field, content, width = 'auto') => {
+      const isEditing = editingCell?.taskId === task.id && editingCell?.field === field;
+
+      if (isEditing) {
+        return (
+          <div className="flex-1 h-full">
+            <input
+              className="w-full px-1 py-0.5 text-xs border rounded focus:outline-none focus:ring-0 focus:border-gray-300 bg-white"
+              style={{
+                fontFamily: 'inherit',
+                lineHeight: 'inherit',
+                WebkitTapHighlightColor: 'transparent', // ลบ highlight สีฟ้า
+              }}
+              defaultValue={content}
+              autoFocus
+              onBlur={(e) => handleCellEdit(task.id, field, e.target.value, status)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleCellEdit(task.id, field, e.target.value, status);
+                } else if (e.key === 'Escape') {
+                  setEditingCell(null);
+                }
+              }}
+              onClick={e => e.stopPropagation()}
+            />
+          </div>
+        );
+      }
+
+      return (
+        <span
+          onDoubleClick={(e) => handleDoubleClick(e, field)}
+          className="block truncate cursor-text text-xs text-gray-700"
+          style={{ width }}
+        >
+          {content}
+        </span>
+      );
+    };
+
+
     // Create draggableId with appropriate prefix
     const draggableId = `${isSubtask ? 'subtask' : 'task'}-${task.id}`;
 
     return (
-      <Draggable draggableId={draggableId} index={task.index || 0}>
+      <Draggable draggableId={`${isSubtask ? 'subtask' : 'task'}-${task.id}`} index={task.index || 0} isDragDisabled={!!editingCell}>
         {(provided) => (
           <div
             ref={provided.innerRef}
@@ -721,13 +793,12 @@ const ListView = () => {
             {...provided.dragHandleProps}
           >
             <div
-              className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 ${isSubtask ? "bg-gray-50" : ""
+              className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 ${isSubtask ? "bg-white" : ""
                 }`}
             >
               <div className="col-span-4 flex items-center min-w-0">
                 <div
-                  className={`flex items-center space-x-3 ${isSubtask ? "pl-14" : ""
-                    } min-w-0 overflow-hidden`}
+                  className={`flex items-center space-x-3 ${isSubtask ? "pl-14" : ""} min-w-0 overflow-hidden relative w-full`}
                 >
                   <GripVertical className="flex-shrink-0 w-4 h-4 text-gray-400 cursor-grab hover:text-gray-600 active:cursor-grabbing" />
                   {!isSubtask && (
@@ -766,11 +837,11 @@ const ListView = () => {
                       />
                     )}
                   </div>
-                  <span className="text-xs text-gray-700 truncate overflow-hidden">
-                    {task.name}
-                  </span>
+                  <div className="flex-1 min-w-0"> {/* Wrapper for name */}
+                    {renderEditableCell('name', task.name)}
+                  </div>
                   {task.tag && (
-                    <span className="px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded text-xs whitespace-nowrap">
+                    <span className="flex-shrink-0 px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded text-xs whitespace-nowrap">
                       {task.tag}
                     </span>
                   )}
@@ -875,6 +946,7 @@ const ListView = () => {
                           <React.Fragment key={task.id}>
                             <SortableTaskRow
                               task={{ ...task, index }}
+                              status={status}
                               isCompleted={completedTasks[task.id]}
                               expandedTasks={expandedTasks}
                               setExpandedTasks={setExpandedTasks}
@@ -896,6 +968,7 @@ const ListView = () => {
                                       <SortableTaskRow
                                         key={subtask.id}
                                         task={{ ...subtask, index: subtaskIndex }}
+                                        status={status}
                                         isSubtask
                                         isCompleted={completedTasks[subtask.id]}
                                         expandedTasks={expandedTasks}
