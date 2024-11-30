@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChevronDown,
   Plus,
@@ -22,7 +22,9 @@ import {
   Calendar,
   ChevronRight,
   Check,
+  GripVertical,
 } from "lucide-react";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const MOCK_DATA = {
   assignees: [
@@ -44,69 +46,141 @@ const MOCK_DATA = {
 };
 
 // เพิ่มไว้ต่อจาก MOCK_DATA
-const CASES_DATA = {
-  "NEW COMING": [],
+const TASKS_DATA = {
+  "NEW COMING": [
+    {
+      id: "125",
+      name: "Task 125 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]",
+      assignees: [
+        { id: 1, avatar: "/avatar1.jpg", name: "John" },
+        { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
+      ],
+      dueDate: "Dec 1",
+      comments: 1,
+      taskCode: "125",
+      surgeon: "นพ สมชาย",
+      hospital: "โรงพยาบาลจุฬา",
+      subtasks: [
+        {
+          id: "8",
+          name: "Task 125 - Initial planning",
+          assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+        },
+        {
+          id: "9",
+          name: "Task 125 - CT Scan review",
+          assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
+        }
+      ]
+    },
+    {
+      id: "126",
+      name: "Task 126 - Hip replacement surgery - Dr.วิชัย [รพ.รามา]",
+      assignees: [{ id: 2, avatar: "/avatar2.jpg", name: "Jane" }],
+      dueDate: "Dec 3",
+      taskCode: "126",
+      surgeon: "นพ วิชัย",
+      hospital: "โรงพยาบาลรามา",
+      subtasks: [
+        {
+          id: "10",
+          name: "Task 126 - Patient consultation",
+          assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+        }
+      ]
+    }
+  ],
   "PLANNING AND DESIGN": [
     {
-      id: "case-124",
-      name: "Case 124 - Mandible reconstruction with fibula flap - Dr.นนท์ [รพ.ศิริราช]",
+      id: "124",
+      name: "Task 124 - Mandible reconstruction - Dr.นนท์ [รพ.ศิริราช]",
       assignees: [
-        { id: 1, avatar: "/avatar1.jpg" },
-        { id: 2, avatar: "/avatar2.jpg" },
+        { id: 1, avatar: "/avatar1.jpg", name: "John" },
+        { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
       ],
       dueDate: "Nov 6",
       comments: 2,
-      caseCode: "124",
+      taskCode: "124",
       surgeon: "นพ วิชิตชนม์",
       hospital: "โรงพยาบาลศิริราช",
-      tasks: [
+      subtasks: [
         {
-          id: "t1",
-          name: "Case 124 - Surgical Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation Planning confirmation",
-          assignee: { id: 1, avatar: "/avatar1.jpg" },
+          id: "1",
+          name: "Task 124 - Surgical planning review",
+          assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
           completed: true,
         },
         {
-          id: "t2",
-          name: "Case 124 - Surgical guide design",
-          assignee: { id: 2, avatar: "/avatar2.jpg" },
-          dueDate: "Nov 6",
+          id: "2",
+          name: "Task 124 - Guide design",
+          assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+          dueDate: "Nov 6"
         },
         {
-          id: "t3",
-          name: "Case 124 - Reconstruction plate design",
-          assignee: { id: 1, avatar: "/avatar1.jpg" },
+          id: "3",
+          name: "Task 124 - 3D modeling",
+          assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
         },
         {
-          id: "t4",
-          name: "Case 124 - Mock up model fabrication (SLA)",
-          assignee: { id: 3, avatar: "/avatar3.jpg" },
-          tag: "polymer manufacturing",
-        },
-        {
-          id: "t5",
-          name: "Case 124 - Mandible cutting guide fabrication (SLA)",
-          assignee: { id: 3, avatar: "/avatar3.jpg" },
-          tag: "polymer manufacturing",
-        },
-        {
-          id: "t6",
-          name: "Case 124 - Titanium plate reconstruction fabrication",
-          assignees: [
-            { id: 4, avatar: "/avatar4.jpg" },
-            { id: 5, avatar: "/avatar5.jpg" },
-          ],
-          comments: 1,
-          tag: "metal manufacturing",
-        },
-        {
-          id: "t7",
-          name: "Case 124 - Delivery",
-          assignee: { id: 2, avatar: "/avatar2.jpg" },
-        },
-      ],
+          id: "4",
+          name: "Task 124 - Model fabrication",
+          assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
+          tag: "manufacturing"
+        }
+      ]
     },
+    {
+      id: "123",
+      name: "Task 123 - Dental implant - Dr.ประสิทธิ์ [รพ.ศิริราช]",
+      assignees: [{ id: 4, avatar: "/avatar4.jpg", name: "Tom" }],
+      dueDate: "Nov 10",
+      comments: 3,
+      taskCode: "123",
+      surgeon: "นพ ประสิทธิ์",
+      hospital: "โรงพยาบาลศิริราช",
+      subtasks: [
+        {
+          id: "11",
+          name: "Task 123 - Design review",
+          assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" }
+        },
+        {
+          id: "12",
+          name: "Task 123 - Final adjustments",
+          assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" },
+          tag: "design"
+        }
+      ]
+    }
   ],
+  "IN PROGRESS": [
+    {
+      id: "122",
+      name: "Task 122 - Cranial implant - Dr.มานะ [รพ.จุฬา]",
+      assignees: [
+        { id: 5, avatar: "/avatar5.jpg", name: "David" },
+        { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
+      ],
+      dueDate: "Nov 15",
+      taskCode: "122",
+      surgeon: "นพ มานะ",
+      hospital: "โรงพยาบาลจุฬา",
+      subtasks: [
+        {
+          id: "13",
+          name: "Task 122 - Production setup",
+          assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" },
+          tag: "manufacturing"
+        },
+        {
+          id: "14",
+          name: "Task 122 - Quality inspection",
+          assignee: { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
+        }
+      ]
+    }
+  ],
+  "COMPLETED": []
 };
 
 const SearchableDropdown = ({ options, placeholder, value, onChange }) => {
@@ -558,205 +632,303 @@ const TopActions = () => {
 };
 
 const ListView = () => {
-  const [expandedGroups, setExpandedGroups] = useState({
-    "NEW COMING": true,
-    "PLANNING AND DESIGN": true,
+  const [tasksData, setTasksData] = useState(TASKS_DATA);
+  const [expandedTasks, setExpandedTasks] = useState({});
+  const [expandedGroups, setExpandedGroups] = useState(() => {
+    const initialExpanded = {};
+    Object.keys(TASKS_DATA).forEach(status => {
+      initialExpanded[status] = true;
+    });
+    return initialExpanded;
   });
-  const [expandedCases, setExpandedCases] = useState({});
   const [completedTasks, setCompletedTasks] = useState({});
+  const [key, setKey] = useState(0);
 
-  const statusColors = {
-    "NEW COMING": "gray",
-    "PLANNING AND DESIGN": "yellow",
-    MANUFACTURING: "blue",
+  useEffect(() => {
+    // Force re-render once after mount to properly register drag-drop areas
+    setKey(prev => prev + 1);
+  }, []);
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const { source, destination, draggableId, type } = result;
+    const sourceStatus = source.droppableId.split('::')[0];
+    const destStatus = destination.droppableId.split('::')[0];
+
+    // Create deep copy of data
+    const newData = JSON.parse(JSON.stringify(tasksData));
+
+    if (type === 'task') {
+      // Extract pure id from draggableId (remove 'task-' prefix)
+      const taskId = draggableId.split('-')[1];
+      const [movedTask] = newData[sourceStatus].splice(source.index, 1);
+
+      if (sourceStatus === destStatus) {
+        newData[destStatus].splice(destination.index, 0, movedTask);
+      } else {
+        movedTask.status = destStatus;
+        newData[destStatus].splice(destination.index, 0, movedTask);
+      }
+    } else {
+      // Handle subtask dragging
+      const sourceParentId = source.droppableId.split('::')[1];
+      const destParentId = destination.droppableId.split('::')[1];
+      const subtaskId = draggableId.split('-')[1]; // Extract pure id
+
+      // Find source parent task and remove subtask
+      // const sourceTask = newData[sourceStatus].find(t => t.id === sourceParentId);
+      const sourceTask = newData[sourceStatus].find(t => t.id === sourceParentId.replace('task-', ''));
+      const subtaskIndex = sourceTask.subtasks.findIndex(st => st.id === subtaskId);
+      const [subtask] = sourceTask.subtasks.splice(subtaskIndex, 1);
+
+      if (destParentId === 'root') {
+        // Convert subtask to main task
+        const newTask = {
+          ...subtask,
+          id: Date.now().toString(), // Use pure id
+          subtasks: []
+        };
+        newData[destStatus].splice(destination.index, 0, newTask);
+      } else {
+        // Move to another task as subtask
+        const destTask = newData[destStatus].find(t => t.id === destParentId);
+        destTask.subtasks.splice(destination.index, 0, subtask);
+      }
+    }
+
+    setTasksData(newData);
   };
 
-  const getProgressCircle = (status, count) => {
-    const color = statusColors[status];
-    const hasItems = count > 0;
-    const style = hasItems
-      ? { backgroundClip: "content-box", padding: "3px" }
-      : {};
+  const SortableTaskRow = ({
+    task,
+    isSubtask = false,
+    isCompleted,
+    expandedTasks,
+    setExpandedTasks,
+    setCompletedTasks,
+    parentId
+  }) => {
+    // Create draggableId with appropriate prefix
+    const draggableId = `${isSubtask ? 'subtask' : 'task'}-${task.id}`;
 
     return (
-      <div
-        className={`w-5 h-5 rounded-full border-2 border-${color}-400 ${hasItems ? `bg-${color}-400` : ""
-          }`}
-        style={style}
-      />
-    );
-  };
-
-  const renderTaskRow = (task, isSubtask = false) => {
-    const isCompleted = completedTasks[task.id];
-
-    return (
-      <div
-        className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 ${isSubtask ? "bg-gray-50" : ""
-          }`}
-      >
-        {/* คอลัมน์แรก (Name) */}
-        <div className="col-span-4 flex items-center min-w-0">
+      <Draggable draggableId={draggableId} index={task.index || 0}>
+        {(provided) => (
           <div
-            className={`flex items-center space-x-3 ${isSubtask ? "pl-14" : ""} min-w-0 overflow-hidden`}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
           >
-            {!isSubtask && (
-              <ChevronRight
-                className={`flex-shrink-0 w-4 h-4 text-gray-400 cursor-pointer transform ${expandedCases[task.id] ? "rotate-90" : ""
-                  }`}
-                onClick={() =>
-                  setExpandedCases((prev) => ({
-                    ...prev,
-                    [task.id]: !prev[task.id],
-                  }))
-                }
-              />
-            )}
             <div
-              className="flex-shrink-0 w-4 h-4 rounded-full border-2 cursor-pointer flex items-center justify-center"
-              style={{
-                backgroundColor: isCompleted ? "#22C55E" : "transparent",
-                borderColor: isCompleted ? "#22C55E" : "#D1D5DB",
-              }}
-              onClick={() =>
-                setCompletedTasks((prev) => ({
-                  ...prev,
-                  [task.id]: !prev[task.id],
-                }))
-              }
+              className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 ${isSubtask ? "bg-gray-50" : ""
+                }`}
             >
-              {isCompleted && (
-                <Check
-                  className="w-[10px] h-[10px] text-white"
-                  style={{
-                    strokeWidth: 3,
-                    strokeLinecap: "round",
-                    strokeLinejoin: "round",
-                  }}
-                />
-              )}
-            </div>
-            <span className="text-xs text-gray-700 truncate overflow-hidden">{task.name}</span>
-            {task.tag && (
-              <span className="px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded text-xs whitespace-nowrap">
-                {task.tag}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="col-span-3 flex -space-x-1">
-          {(task.assignees || [task.assignee])
-            .filter(Boolean)
-            .map((assignee) => (
-              <div
-                key={assignee.id}
-                className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600"
-              >
-                {assignee.name ? assignee.name.charAt(0) : "?"}
+              <div className="col-span-4 flex items-center min-w-0">
+                <div
+                  className={`flex items-center space-x-3 ${isSubtask ? "pl-14" : ""
+                    } min-w-0 overflow-hidden`}
+                >
+                  <GripVertical className="flex-shrink-0 w-4 h-4 text-gray-400 cursor-grab hover:text-gray-600 active:cursor-grabbing" />
+                  {!isSubtask && (
+                    <ChevronRight
+                      className={`flex-shrink-0 w-4 h-4 text-gray-400 cursor-pointer transform ${expandedTasks[task.id] ? "rotate-90" : ""
+                        }`}
+                      onClick={() =>
+                        setExpandedTasks((prev) => ({
+                          ...prev,
+                          [task.id]: !prev[task.id],
+                        }))
+                      }
+                    />
+                  )}
+                  <div
+                    className="flex-shrink-0 w-4 h-4 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                    style={{
+                      backgroundColor: isCompleted ? "#22C55E" : "transparent",
+                      borderColor: isCompleted ? "#22C55E" : "#D1D5DB",
+                    }}
+                    onClick={() =>
+                      setCompletedTasks((prev) => ({
+                        ...prev,
+                        [task.id]: !prev[task.id],
+                      }))
+                    }
+                  >
+                    {isCompleted && (
+                      <Check
+                        className="w-[10px] h-[10px] text-white"
+                        style={{
+                          strokeWidth: 3,
+                          strokeLinecap: "round",
+                          strokeLinejoin: "round",
+                        }}
+                      />
+                    )}
+                  </div>
+                  <span className="text-xs text-gray-700 truncate overflow-hidden">
+                    {task.name}
+                  </span>
+                  {task.tag && (
+                    <span className="px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded text-xs whitespace-nowrap">
+                      {task.tag}
+                    </span>
+                  )}
+                </div>
               </div>
-            ))}
-        </div>
-        <div className="col-span-1 text-xs text-blue-600">
-          {task.dueDate || "-"}
-        </div>
-        <div className="col-span-1 text-xs text-gray-500">
-          {task.comments || "-"}
-        </div>
-        <div className="col-span-1 text-xs font-medium text-gray-900">
-          {task.caseCode || "-"}
-        </div>
-        <div className="col-span-1 text-xs text-gray-600 truncate">
-          {task.surgeon || "-"}
-        </div>
-        <div className="col-span-1 text-xs text-gray-600 truncate">
-          {task.hospital || "-"}
-        </div>
-      </div>
+
+              <div className="col-span-3 flex -space-x-1">
+                {(task.assignees || [task.assignee])
+                  .filter(Boolean)
+                  .map((assignee) => (
+                    <div
+                      key={assignee.id}
+                      className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600"
+                    >
+                      {assignee.name ? assignee.name.charAt(0) : "?"}
+                    </div>
+                  ))}
+              </div>
+              <div className="col-span-1 text-xs text-blue-600">
+                {task.dueDate || "-"}
+              </div>
+              <div className="col-span-1 text-xs text-gray-500">
+                {task.comments || "-"}
+              </div>
+              <div className="col-span-1 text-xs font-medium text-gray-900">
+                {task.taskCode || "-"}
+              </div>
+              <div className="col-span-1 text-xs text-gray-600 truncate">
+                {task.surgeon || "-"}
+              </div>
+              <div className="col-span-1 text-xs text-gray-600 truncate">
+                {task.hospital || "-"}
+              </div>
+            </div>
+          </div>
+        )}
+      </Draggable>
     );
   };
 
   return (
-    <div className="flex-1 p-6 bg-gray-50 overflow-auto">
-      <div className="space-y-4">
-        {Object.entries(CASES_DATA).map(([status, cases]) => (
-          <div
-            key={status}
-            className="bg-white rounded-lg border border-gray-200"
-          >
-            {/* Status Header */}
-            <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-100">
-              <div className="flex items-center space-x-3">
-                <ChevronDown
-                  className={`w-5 h-5 text-gray-500 cursor-pointer transform ${expandedGroups[status] ? "" : "-rotate-90"
-                    }`}
-                  onClick={() =>
-                    setExpandedGroups((prev) => ({
-                      ...prev,
-                      [status]: !prev[status],
-                    }))
-                  }
-                />
-                <div className="flex items-center space-x-2">
-                  <div
-                    className="w-5 h-5 rounded-full"
-                    style={{
-                      background:
-                        status === "PLANNING AND DESIGN"
-                          ? "#FFD700"
-                          : "#E5E7EB",
-                      opacity: 0.7,
-                    }}
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div key={key} className="flex-1 p-6 bg-gray-50 overflow-auto">
+        <div className="space-y-4">
+          {Object.entries(tasksData).map(([status, tasks]) => (
+            <div
+              key={status}
+              className="bg-white rounded-lg border border-gray-200"
+            >
+              <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <ChevronRight
+                    className={`w-5 h-5 text-gray-500 cursor-pointer transform ${expandedGroups[status] ? "rotate-90" : ""
+                      }`}
+                    onClick={() =>
+                      setExpandedGroups((prev) => ({
+                        ...prev,
+                        [status]: !prev[status],
+                      }))
+                    }
                   />
-                  <span className="font-semibold text-gray-800">{status}</span>
+                  <div className="flex items-center space-x-2">
+                    <div
+                      className="w-5 h-5 rounded-full"
+                      style={{
+                        background:
+                          status === "PLANNING AND DESIGN"
+                            ? "#FFD700"
+                            : "#E5E7EB",
+                        opacity: 0.7,
+                      }}
+                    />
+                    <span className="font-semibold text-gray-800">{status}</span>
+                  </div>
                 </div>
+                <span className="text-sm text-gray-500 font-medium">
+                  {tasks.length}
+                </span>
               </div>
-              <span className="text-sm text-gray-500 font-medium">
-                {cases.length}
-              </span>
+
+              {expandedGroups[status] && (
+                <>
+                  <div className="grid grid-cols-12 gap-4 px-6 py-2 border-b text-xs text-gray-500">
+                    <div className="col-span-4">Name</div>
+                    <div className="col-span-3">Assignee</div>
+                    <div className="col-span-1">Due date</div>
+                    <div className="col-span-1">Comments</div>
+                    <div className="col-span-1">Task Code</div>
+                    <div className="col-span-1">Surgeons</div>
+                    <div className="col-span-1">Hospitals</div>
+                  </div>
+
+                  <Droppable droppableId={status} type="task">
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className={`divide-y divide-gray-200 ${snapshot.isDraggingOver ? 'bg-blue-50' : ''
+                          }`}
+                      >
+                        {tasks.map((task, index) => (
+                          <React.Fragment key={task.id}>
+                            <SortableTaskRow
+                              task={{ ...task, index }}
+                              isCompleted={completedTasks[task.id]}
+                              expandedTasks={expandedTasks}
+                              setExpandedTasks={setExpandedTasks}
+                              setCompletedTasks={setCompletedTasks}
+                            />
+                            {expandedTasks[task.id] && (
+                              <Droppable
+                                droppableId={`${status}::${task.id}`}
+                                type="subtask"
+                              >
+                                {(providedSubtask, snapshotSubtask) => (
+                                  <div
+                                    ref={providedSubtask.innerRef}
+                                    {...providedSubtask.droppableProps}
+                                    className={`bg-gray-50 ${snapshotSubtask.isDraggingOver ? 'bg-blue-50' : ''
+                                      }`}
+                                  >
+                                    {task.subtasks?.map((subtask, subtaskIndex) => (
+                                      <SortableTaskRow
+                                        key={subtask.id}
+                                        task={{ ...subtask, index: subtaskIndex }}
+                                        isSubtask
+                                        isCompleted={completedTasks[subtask.id]}
+                                        expandedTasks={expandedTasks}
+                                        setExpandedTasks={setExpandedTasks}
+                                        setCompletedTasks={setCompletedTasks}
+                                        parentId={task.id}
+                                      />
+                                    ))}
+                                    {providedSubtask.placeholder}
+                                  </div>
+                                )}
+                              </Droppable>
+                            )}
+                          </React.Fragment>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+
+                  <div className="p-2">
+                    <button className="flex items-center space-x-1 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md w-full">
+                      <Plus className="w-4 h-4" />
+                      <span>Add Task</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
-
-            {expandedGroups[status] && (
-              <>
-                {/* Column Headers */}
-                <div className="grid grid-cols-12 gap-4 px-6 py-2 border-b text-xs text-gray-500">
-                  <div className="col-span-4">Name</div>
-                  <div className="col-span-3">Assignee</div>
-                  <div className="col-span-1">Due date</div>
-                  <div className="col-span-1">Comments</div>
-                  <div className="col-span-1">Case Code</div>
-                  <div className="col-span-1">Surgeons</div>
-                  <div className="col-span-1">Hospitals</div>
-                </div>
-
-                {/* Cases and Tasks */}
-                <div className="divide-y divide-gray-200">
-                  {cases.map((caseItem) => (
-                    <div key={caseItem.id}>
-                      {renderTaskRow(caseItem)}
-                      {expandedCases[caseItem.id] && (
-                        <div className="bg-gray-50">
-                          {caseItem.tasks.map((task) =>
-                            renderTaskRow(task, true)
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Add Case Button */}
-                <div className="p-2">
-                  <button className="flex items-center space-x-1 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md w-full">
-                    <Plus className="w-4 h-4" />
-                    <span>Add Case</span>
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </DragDropContext>
   );
 };
 
