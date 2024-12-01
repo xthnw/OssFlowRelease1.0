@@ -208,7 +208,7 @@ export const ListView = () => {
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <div key={key} className="flex-1 p-6 bg-white overflow-auto">
+            <div key={key} className="flex-1 p-6 bg-white overflow-y-scroll scrollbar">
                 <div className="space-y-4">
                     {Object.entries(tasksData).map(([status, tasks]) => (
                         <div

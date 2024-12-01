@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, Home, Folder, Users, ChevronDown, ChevronRight, Plus } from 'lucide-react';
 import { MOCK_DATA } from '../../data/mockData';
+import { Link } from 'react-router-dom';
 
 export const Sidebar = ({ setShowCreateCase }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -36,10 +37,10 @@ export const Sidebar = ({ setShowCreateCase }) => {
 
             {/* Navigation */}
             <div className="flex-1 p-2 space-y-1 mt-4 relative">
-                <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+                <Link to="/" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
                     <Home className="w-4 h-4" />
                     {!isCollapsed && <span className="text-sm">Home</span>}
-                </button>
+                </Link>
                 <button
                     className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center justify-between"
                     onClick={() => setExpandedProjects(!expandedProjects)}
@@ -60,28 +61,27 @@ export const Sidebar = ({ setShowCreateCase }) => {
                         {MOCK_DATA.projects.map((project) => (
                             <div
                                 key={project.id}
-                                className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 cursor-pointer"
+                                className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100"
                                 onMouseEnter={() => setHoveredItem(project.id)}
                                 onMouseLeave={() => setHoveredItem(null)}
                             >
-                                <span className="text-sm truncate">{project.name}</span>
+                                <Link to={`/${project.id}`} className="text-sm truncate">
+                                    {project.name}
+                                </Link>
                                 {hoveredItem === project.id && (
                                     <Plus
                                         className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleAddClick(project.id);
-                                        }}
+                                        onClick={() => handleAddClick(project.id)}
                                     />
                                 )}
                             </div>
                         ))}
                     </div>
                 )}
-                <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+                <Link to="/team" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
                     <Users className="w-4 h-4" />
                     {!isCollapsed && <span className="text-sm">Team</span>}
-                </button>
+                </Link>
             </div>
         </div>
     )

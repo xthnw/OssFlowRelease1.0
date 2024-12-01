@@ -80,7 +80,7 @@
 @layer utilities {
   .scrollbar {
     scrollbar-width: thin; /* สำหรับ Firefox */
-    scrollbar-color: #adb3bd transparent; /* Thumb และ Track */
+    scrollbar-color: #a0aec0 transparent; /* Thumb และ Track */
   }
 
   .scrollbar::-webkit-scrollbar {
@@ -102,5 +102,7 @@
   .scrollbar::-webkit-scrollbar-track {
     background-color: transparent; /* สีของ Track */
   }
+
+  
 }
 
