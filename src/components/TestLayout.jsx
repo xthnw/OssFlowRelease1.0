@@ -1058,10 +1058,6 @@ const ListView = () => {
       );
     };
 
-
-    // Create draggableId with appropriate prefix
-    const draggableId = `${isSubtask ? 'subtask' : 'task'}-${task.id}`;
-
     return (
       <Draggable draggableId={`${isSubtask ? 'subtask' : 'task'}-${task.id}`} index={task.index || 0} isDragDisabled={!!editingCell}>
         {(provided) => (
@@ -1153,7 +1149,7 @@ const ListView = () => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div key={key} className="flex-1 p-6 bg-gray-50 overflow-auto">
+      <div key={key} className="flex-1 p-6 bg-white overflow-auto">
         <div className="space-y-4">
           {Object.entries(tasksData).map(([status, tasks]) => (
             <div
@@ -1455,8 +1451,8 @@ const TestLayout = () => {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 overflow-auto">
-            {/* <ListView /> */}
+          <div className="flex-1 bg-white overflow-y-scroll scrollbar">
+            <ListView />
           </div>
         </div>
       </div>
