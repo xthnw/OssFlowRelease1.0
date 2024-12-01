@@ -24,6 +24,13 @@ import {
   Check,
   GripVertical,
   UserPlus,
+  List,
+  LayoutGrid,
+  Folder,
+  Bell,
+  Menu,
+  MessageCircle,
+  ListCollapse,
 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -1268,6 +1275,8 @@ const ListView = () => {
 };
 
 const TestLayout = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [currentView, setCurrentView] = useState('list');
   const [expandedProjects, setExpandedProjects] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showCreateCase, setShowCreateCase] = useState(false);
@@ -1342,117 +1351,116 @@ const TestLayout = () => {
   };
 
   return (
-    <>
-      <div className="flex h-screen bg-gray-100">
-        {/* Left Sidebar */}
-        <div className="w-64 bg-gray-50 border-r border-gray-200">
-          {/* Logo and Title */}
-          <div className="h-14 px-4 border-b border-gray-200 flex items-center">
+    <div className="flex h-screen bg-gray-50"> {/* เปลี่ยนสีพื้นหลังให้เข้ากับ card */}
+      {/* Left Sidebar */}
+      <div className={`${isCollapsed ? 'w-14' : 'w-64'} transition-all duration-300 bg-gray-50 flex flex-col`}>
+        {/* Logo section */}
+        <div className="h-14 flex items-center justify-between px-4">
+          {!isCollapsed && (
             <div className="flex items-center space-x-2">
               <img
                 src="https://res.cloudinary.com/djgpgveds/image/upload/v1732822814/tsyb5mziqtu8mql1govz.png"
                 alt="OssFlow Logo"
                 className="w-8 h-8 object-contain"
               />
-              <span className="font-semibold text-lg">OssFlow</span>
+              <span className="font-medium">OssFlow</span>
             </div>
-          </div>
-          <div className="p-2">
-            <div className="space-y-1">
-              {/* Home */}
-              <div className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
-                <Home className="w-4 h-4 text-gray-500" />
-                <span className="text-sm">Home</span>
-              </div>
-              {/* Dashboard */}
-              <div className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
-                <LayoutDashboard className="w-4 h-4 text-gray-500" />
-                <span className="text-sm">Dashboard</span>
-              </div>
-
-              <div>
-                <div
-                  className="group flex items-center justify-between p-2 rounded-md hover:bg-gray-100 cursor-pointer"
-                  onClick={() => setExpandedProjects(!expandedProjects)}
-                >
-                  <div className="flex items-center space-x-2">
-                    <FolderTree className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">Projects</span>
-                  </div>
-                  {expandedProjects ? (
-                    <ChevronDown className="w-4 h-4 text-gray-400" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
-                  )}
-                </div>
-
-                {/* Projects List */}
-                {expandedProjects && (
-                  <div className="ml-4 space-y-1 mt-1">
-                    {projects.map((project) => (
-                      <div
-                        key={project.id}
-                        className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 cursor-pointer"
-                        onMouseEnter={() => setHoveredItem(project.id)}
-                        onMouseLeave={() => setHoveredItem(null)}
-                      >
-                        <span className="text-sm truncate">{project.name}</span>
-                        {hoveredItem === project.id && (
-                          <Plus
-                            className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleAddClick(project.id);
-                            }}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* People */}
-              <div className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
-                <Users className="w-4 h-4 text-gray-500" />
-                <span className="text-sm">People</span>
-              </div>
-            </div>
-          </div>
+          )}
+          <button onClick={() => setIsCollapsed(!isCollapsed)} className="p-1 hover:bg-gray-100 rounded">
+            <Menu className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col">
-          {/* Top Navigation */}
-          <div className="h-14 bg-white border-b border-gray-200 flex items-center px-4">
-            <div className="flex space-x-1">
-              {tabs.map((tab) => {
-                const Icon = tab.icon;
-                return (
-                  <div
-                    key={tab.id}
-                    className="px-3 py-1 rounded-md hover:bg-gray-100 cursor-pointer flex items-center space-x-2"
-                  >
-                    <Icon className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{tab.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Actions และ Toolbar */}
-          <TopActions />
-
-          {/* List View */}
-          <ListView />
+        {/* Navigation */}
+        <div className="flex-1 p-2 space-y-1">
+          <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+            <Home className="w-4 h-4" />
+            {!isCollapsed && <span className="text-sm">Home</span>}
+          </button>
+          <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+            <Folder className="w-4 h-4" />
+            {!isCollapsed && <span className="text-sm">Projects</span>}
+          </button>
+          <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+            <Users className="w-4 h-4" />
+            {!isCollapsed && <span className="text-sm">Team</span>}
+          </button>
         </div>
       </div>
-      <CreateCaseModal
-        isOpen={showCreateCase}
-        onClose={() => setShowCreateCase(false)}
-      />
-    </>
+
+      {/* Main Content Wrapper with Padding */}
+      <div className="flex-1 pr-2 py-2 mt-8">
+        {/* Card Container */}
+        <div className="bg-white rounded-lg shadow border border-gray-200 flex flex-col h-full overflow-hidden">
+          {/* Top Navigation */}
+          <div className="h-14 border-b flex items-center justify-between px-4">
+            {/* Breadcrumb */}
+            <div className="flex items-center text-sm text-gray-600">
+              <span>Team Space</span>
+              <ChevronRight className="w-4 h-4 mx-1" />
+              <span>Projects</span>
+              <ChevronRight className="w-4 h-4 mx-1" />
+              <span className="font-medium text-gray-900">Task 1</span>
+            </div>
+
+            {/* Right Actions */}
+            <div className="flex items-center space-x-4">
+              <Search className="w-5 h-5 text-gray-400" />
+              <Bell className="w-5 h-5 text-gray-400" />
+              <MessageCircle className="w-5 h-5 text-gray-400" />
+              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                <User className="w-4 h-4" />
+              </div>
+            </div>
+          </div>
+
+          {/* View Toggle & Actions */}
+          <div className="border-b flex items-center justify-between px-4 py-2">
+            <div className="flex items-center space-x-2">
+              <div className="flex bg-gray-100 rounded-md p-1">
+                <button
+                  className={`p-1 rounded ${currentView === 'board' ? 'bg-white shadow-sm' : ''}`}
+                  onClick={() => setCurrentView('board')}
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+                <button
+                  className={`p-1 rounded ${currentView === 'list' ? 'bg-white shadow-sm' : ''}`}
+                  onClick={() => setCurrentView('list')}
+                >
+                  <List className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right Actions */}
+            <div className="flex items-center space-x-4">
+              <button className="flex items-center space-x-2 text-gray-600 text-sm">
+                <Filter className="w-4 h-4" />
+                <span>Filter</span>
+              </button>
+              <button className="flex items-center space-x-2 text-gray-600 text-sm">
+                <User className="w-4 h-4" />
+                <span>Me mode</span>
+              </button>
+              <button className="flex items-center space-x-2 text-gray-600 text-sm">
+                <Users className="w-4 h-4" />
+                <span>Assignee</span>
+              </button>
+              <button className="text-gray-500 text-sm">
+                Closed
+              </button>
+              <Settings className="w-4 h-4 text-gray-400" />
+            </div>
+          </div>
+
+          {/* Main Content Area */}
+          <div className="flex-1 overflow-auto">
+            {/* <ListView /> */}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
