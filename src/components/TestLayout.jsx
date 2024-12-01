@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ChevronDown,
   Plus,
@@ -23,6 +23,7 @@ import {
   ChevronRight,
   Check,
   GripVertical,
+  UserPlus,
 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -645,6 +646,64 @@ const ListView = () => {
   const [editingCell, setEditingCell] = useState(null);
   const [key, setKey] = useState(0);
 
+  const [assigneeReference, setAssigneeReference] = useState([
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Smith' },
+    { id: 3, name: 'Bob Johnson' },
+    // Add more reference data as needed
+  ]);
+
+  const [departmentReference] = useState([
+    {
+      id: 1,
+      name: 'Design',
+      members: [
+        { id: 1, name: 'John Design' },
+        { id: 2, name: 'Jane Designer' },
+      ]
+    },
+    {
+      id: 2,
+      name: 'Polymer Production',
+      members: [
+        { id: 3, name: 'Bob Polymer' },
+        { id: 4, name: 'Alice Production' },
+      ]
+    },
+    {
+      id: 3,
+      name: 'Metal Production',
+      members: [
+        { id: 5, name: 'Charlie Metal' },
+        { id: 6, name: 'David Steel' },
+      ]
+    },
+    {
+      id: 4,
+      name: 'QA/QC',
+      members: [
+        { id: 7, name: 'Eva Quality' },
+        { id: 8, name: 'Frank Control' },
+      ]
+    },
+    {
+      id: 5,
+      name: 'Packaging',
+      members: [
+        { id: 9, name: 'Grace Pack' },
+        { id: 10, name: 'Henry Box' },
+      ]
+    },
+    {
+      id: 6,
+      name: 'Delivery',
+      members: [
+        { id: 11, name: 'Ian Delivery' },
+        { id: 12, name: 'Jack Transport' },
+      ]
+    }
+  ]);
+
   useEffect(() => {
     // Force re-render once after mount to properly register drag-drop areas
     setKey(prev => prev + 1);
@@ -725,6 +784,54 @@ const ListView = () => {
     setEditingCell(null);
   };
 
+  const handleAssigneeUpdate = (taskId, newAssignees, status) => {
+    setTasksData(prev => {
+      const newData = JSON.parse(JSON.stringify(prev));
+      const taskList = newData[status];
+      const taskIndex = taskList.findIndex(t => t.id === taskId);
+
+      if (taskIndex !== -1) {
+        taskList[taskIndex].assignees = newAssignees;
+      } else {
+        // Check in subtasks
+        for (const task of taskList) {
+          const subtaskIndex = task.subtasks?.findIndex(st => st.id === taskId);
+          if (subtaskIndex !== -1) {
+            task.subtasks[subtaskIndex].assignees = newAssignees;
+            break;
+          }
+        }
+      }
+
+      return newData;
+    });
+    setEditingCell(null);
+  };
+
+  const handleDateUpdate = (taskId, newDate, status) => {
+    setTasksData(prev => {
+      const newData = JSON.parse(JSON.stringify(prev));
+      const taskList = newData[status];
+      const taskIndex = taskList.findIndex(t => t.id === taskId);
+
+      if (taskIndex !== -1) {
+        taskList[taskIndex].dueDate = newDate;
+      } else {
+        // Check in subtasks
+        for (const task of taskList) {
+          const subtaskIndex = task.subtasks?.findIndex(st => st.id === taskId);
+          if (subtaskIndex !== -1) {
+            task.subtasks[subtaskIndex].dueDate = newDate;
+            break;
+          }
+        }
+      }
+
+      return newData;
+    });
+    setEditingCell(null);
+  };
+
   const SortableTaskRow = ({
     task,
     isSubtask = false,
@@ -735,9 +842,173 @@ const ListView = () => {
     parentId,
     status,
   }) => {
+    const [activeDepartment, setActiveDepartment] = useState(null);
+    const dropdownRef = useRef(null);
+
     const handleDoubleClick = (e, field) => {
       e.stopPropagation();
       setEditingCell({ taskId: task.id, field });
+    };
+
+    const renderAssigneeCell = () => {
+      const isEditing = editingCell?.taskId === task.id && editingCell?.field === 'assignees';
+
+      if (isEditing) {
+        return (
+          <div className="relative h-full" ref={dropdownRef}>
+            <div
+              className="flex -space-x-1 cursor-pointer"
+            >
+              {(task.assignees || []).map((assignee) => (
+                <div
+                  key={assignee.id}
+                  className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600"
+                >
+                  {assignee.name.charAt(0)}
+                </div>
+              ))}
+            </div>
+
+            <div className="absolute z-50 mt-1 bg-white rounded-md shadow-lg border flex">
+              {/* Department list */}
+              <div className="w-48 border-r">
+                {departmentReference.map((dept) => (
+                  <div
+                    key={dept.id}
+                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between ${activeDepartment === dept.id ? 'bg-gray-100' : ''
+                      }`}
+                    onClick={() => setActiveDepartment(dept.id)}
+                  >
+                    <span>{dept.name}</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400" />
+                  </div>
+                ))}
+              </div>
+
+              {/* Members list - shows when department is selected */}
+              {activeDepartment && (
+                <div className="w-48 py-1">
+                  {departmentReference
+                    .find(d => d.id === activeDepartment)
+                    ?.members.map((member) => {
+                      const isSelected = task.assignees?.some(a => a.id === member.id);
+                      return (
+                        <div
+                          key={member.id}
+                          className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between ${isSelected ? 'bg-blue-50' : ''
+                            }`}
+                          onClick={(e) => {
+                            const newAssignees = isSelected
+                              ? task.assignees.filter(a => a.id !== member.id)
+                              : [...(task.assignees || []), member];
+                            handleAssigneeUpdate(task.id, newAssignees, status);
+                            // ไม่ปิด dropdown หลังจากเลือก
+                            e.stopPropagation();
+                          }}
+                        >
+                          <span>{member.name}</span>
+                          {isSelected && <Check className="w-4 h-4 text-blue-600" />}
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div
+          className="h-full flex items-center"
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+            setEditingCell({ taskId: task.id, field: 'assignees' });
+            // เมื่อเริ่ม edit ให้ set department แรกเป็น active
+            setActiveDepartment(departmentReference[0].id);
+          }}
+        >
+          {task.assignees?.length > 0 ? (
+            <div className="flex -space-x-1">
+              {task.assignees.map((assignee) => (
+                <div
+                  key={assignee.id}
+                  className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600"
+                >
+                  {assignee.name.charAt(0)}
+                </div>
+              ))}
+            </div>
+          ) : (
+            // แก้ตรงนี้ให้เหลือแค่ icon อย่างเดียว ไม่มีข้อความ
+            <div className="w-6 h-6 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-600">
+              <UserPlus className="w-3.5 h-3.5" />
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    // เพิ่ม event handlers สำหรับการกด Escape
+    useEffect(() => {
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape' && editingCell?.field === 'assignees') {
+          setEditingCell(null);
+          setActiveDepartment(null);
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [editingCell]);
+
+    // แก้ไข click outside handler
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setEditingCell(null);
+          setActiveDepartment(null);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const renderDateCell = () => {
+      const isEditing = editingCell?.taskId === task.id && editingCell?.field === 'dueDate';
+
+      if (isEditing) {
+        return (
+          <input
+            type="date"
+            className="w-full px-1 py-0.5 text-xs border rounded focus:outline-none focus:ring-0 focus:border-gray-300"
+            defaultValue={task.dueDate}
+            autoFocus
+            onBlur={(e) => handleDateUpdate(task.id, e.target.value, status)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleDateUpdate(task.id, e.target.value, status);
+              } else if (e.key === 'Escape') {
+                setEditingCell(null);
+              }
+            }}
+            onClick={e => e.stopPropagation()}
+          />
+        );
+      }
+
+      return (
+        <span
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+            setEditingCell({ taskId: task.id, field: 'dueDate' });
+          }}
+          className="block truncate cursor-text text-xs text-blue-600"
+        >
+          {task.dueDate || "-"}
+        </span>
+      );
     };
 
     const renderEditableCell = (field, content, width = 'auto') => {
@@ -793,7 +1064,7 @@ const ListView = () => {
             {...provided.dragHandleProps}
           >
             <div
-              className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 ${isSubtask ? "bg-white" : ""
+              className={`grid grid-cols-12 gap-4 px-6 py-1.5 hover:bg-gray-50 min-h-[36px] ${isSubtask ? "bg-white" : ""
                 }`}
             >
               <div className="col-span-4 flex items-center min-w-0">
@@ -848,32 +1119,23 @@ const ListView = () => {
                 </div>
               </div>
 
-              <div className="col-span-3 flex -space-x-1">
-                {(task.assignees || [task.assignee])
-                  .filter(Boolean)
-                  .map((assignee) => (
-                    <div
-                      key={assignee.id}
-                      className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600"
-                    >
-                      {assignee.name ? assignee.name.charAt(0) : "?"}
-                    </div>
-                  ))}
+              <div className="col-span-3 flex items-center">
+                {renderAssigneeCell()}
               </div>
-              <div className="col-span-1 text-xs text-blue-600">
-                {task.dueDate || "-"}
+              <div className="col-span-1 text-xs text-blue-600 flex items-center">
+                {renderDateCell()}
               </div>
-              <div className="col-span-1 text-xs text-gray-500">
-                {task.comments || "-"}
+              <div className="col-span-1 text-xs text-gray-500 flex items-center">
+                {renderEditableCell('comments', task.comments || '-')}
               </div>
-              <div className="col-span-1 text-xs font-medium text-gray-900">
-                {task.taskCode || "-"}
+              <div className="col-span-1 text-xs font-medium text-gray-900 flex items-center">
+                {renderEditableCell('taskCode', task.taskCode || '-')}
               </div>
-              <div className="col-span-1 text-xs text-gray-600 truncate">
-                {task.surgeon || "-"}
+              <div className="col-span-1 text-xs text-gray-600 truncate flex items-center">
+                {renderEditableCell('surgeon', task.surgeon || '-')}
               </div>
-              <div className="col-span-1 text-xs text-gray-600 truncate">
-                {task.hospital || "-"}
+              <div className="col-span-1 text-xs text-gray-600 truncate flex items-center">
+                {renderEditableCell('hospital', task.hospital || '-')}
               </div>
             </div>
           </div>
@@ -889,7 +1151,7 @@ const ListView = () => {
           {Object.entries(tasksData).map(([status, tasks]) => (
             <div
               key={status}
-              className="bg-white rounded-lg border border-gray-200"
+              className="bg-white rounded-lg border border-gray-200 overflow-hidden"
             >
               <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-100">
                 <div className="flex items-center space-x-3">
@@ -952,7 +1214,7 @@ const ListView = () => {
                               setExpandedTasks={setExpandedTasks}
                               setCompletedTasks={setCompletedTasks}
                             />
-                            {expandedTasks[task.id] && (
+                            {expandedTasks[task.id] && task.subtasks?.length > 0 && (
                               <Droppable
                                 droppableId={`${status}::${task.id}`}
                                 type="subtask"
