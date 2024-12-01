@@ -7,6 +7,7 @@ import { HospitalsPage } from './pages/HospitalsPage';
 import { SurgeonsPage } from './pages/SurgeonsPage';
 import { TeamPage } from './pages/TeamPage';
 import { MainLayout } from './/components/layout/MainLayout';
+import { Test } from './pages/Test';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Route path="/hospitals" element={<MainLayout><HospitalsPage /></MainLayout>} />
       <Route path="/surgeons" element={<MainLayout><SurgeonsPage /></MainLayout>} />
       <Route path="/team" element={<MainLayout><TeamPage /></MainLayout>} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   );
 }

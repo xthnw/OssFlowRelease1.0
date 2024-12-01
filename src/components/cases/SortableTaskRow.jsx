@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { UserPlus, Check, GripVertical, ChevronRight, Plus } from 'lucide-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const SortableTaskRow = ({
     task,
@@ -17,6 +19,8 @@ export const SortableTaskRow = ({
     handleDateUpdate,
     departmentReference,
     handleAssigneeUpdate,
+    showDatePicker,
+    setShowDatePicker,
 }) => {
     const [activeDepartment, setActiveDepartment] = useState(null);
     const dropdownRef = useRef(null);
@@ -153,24 +157,23 @@ export const SortableTaskRow = ({
 
     const renderDateCell = () => {
         const isEditing = editingCell?.taskId === task.id && editingCell?.field === 'dueDate';
+        const date = task.dueDate ? new Date(task.dueDate) : null;
 
         if (isEditing) {
             return (
-                <input
-                    type="date"
-                    className="w-full px-1 py-0.5 text-xs border rounded focus:outline-none focus:ring-0 focus:border-gray-300"
-                    defaultValue={task.dueDate}
-                    autoFocus
-                    onBlur={(e) => handleDateUpdate(task.id, e.target.value, status)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            handleDateUpdate(task.id, e.target.value, status);
-                        } else if (e.key === 'Escape') {
+                <div onClick={e => e.stopPropagation()}>
+                    <DatePicker
+                        selected={date}
+                        onChange={(selectedDate) => {
+                            handleDateUpdate(task.id, selectedDate.toISOString().split('T')[0], status);
                             setEditingCell(null);
-                        }
-                    }}
-                    onClick={e => e.stopPropagation()}
-                />
+                        }}
+                        dateFormat="yyyy-MM-dd"
+                        className="w-32 px-1 py-0.5 text-xs border rounded"
+                        autoFocus
+                        onClickOutside={() => setEditingCell(null)}
+                    />
+                </div>
             );
         }
 
@@ -182,7 +185,7 @@ export const SortableTaskRow = ({
                 }}
                 className="block truncate cursor-text text-xs text-blue-600"
             >
-                {task.dueDate || "-"}
+                {date ? date.toLocaleDateString() : "-"}
             </span>
         );
     };
