@@ -1349,17 +1349,19 @@ const TestLayout = () => {
   return (
     <div className="flex h-screen bg-gray-50"> {/* เปลี่ยนสีพื้นหลังให้เข้ากับ card */}
       {/* Left Sidebar */}
-      <div className={`${isCollapsed ? 'w-14' : 'w-64'} transition-all duration-300 bg-gray-50 flex flex-col`}>
+      <div className={`${isCollapsed ? 'w-14' : 'w-64'} transition-all duration-300 bg-gray-50 flex flex-col relative`}>
+        {/* Gradient overlay */}
+        <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-teal-600/40 via-emerald-500/20 to-transparent -translate-y-1/2 -translate-x-1/4 blur-xl pointer-events-none" />
         {/* Logo section */}
-        <div className="h-14 flex items-center justify-between px-4">
+        <div className="h-14 flex items-center justify-between px-4 relative">
           {!isCollapsed && (
             <div className="flex items-center space-x-2">
               <img
-                src="https://res.cloudinary.com/djgpgveds/image/upload/v1732822814/tsyb5mziqtu8mql1govz.png"
+                src="https://res.cloudinary.com/djgpgveds/image/upload/v1733062717/jdzga0vkqkswho3wgsan.png"
                 alt="OssFlow Logo"
-                className="w-8 h-8 object-contain"
+                className="object-contain"
               />
-              <span className="font-medium">OssFlow</span>
+              {/* <span className="font-medium">OssFlow</span> */}
             </div>
           )}
           <button onClick={() => setIsCollapsed(!isCollapsed)} className="p-1 hover:bg-gray-100 rounded">
@@ -1368,15 +1370,49 @@ const TestLayout = () => {
         </div>
 
         {/* Navigation */}
-        <div className="flex-1 p-2 space-y-1">
+        <div className="flex-1 p-2 space-y-1 mt-4 relative">
           <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
             <Home className="w-4 h-4" />
             {!isCollapsed && <span className="text-sm">Home</span>}
           </button>
-          <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
-            <Folder className="w-4 h-4" />
-            {!isCollapsed && <span className="text-sm">Projects</span>}
+          <button
+            className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center justify-between"
+            onClick={() => setExpandedProjects(!expandedProjects)}
+          >
+            <div className="flex items-center space-x-2">
+              <Folder className="w-4 h-4" />
+              {!isCollapsed && <span className="text-sm">Case</span>}
+            </div>
+            {!isCollapsed && (
+              expandedProjects ?
+                <ChevronDown className="w-4 h-4 text-gray-400" /> :
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+            )}
           </button>
+
+          {!isCollapsed && expandedProjects && (
+            <div className="ml-4 space-y-1 mt-1">
+              {projects.map((project) => (
+                <div
+                  key={project.id}
+                  className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 cursor-pointer"
+                  onMouseEnter={() => setHoveredItem(project.id)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
+                  <span className="text-sm truncate">{project.name}</span>
+                  {hoveredItem === project.id && (
+                    <Plus
+                      className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddClick(project.id);
+                      }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
           <button className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
             <Users className="w-4 h-4" />
             {!isCollapsed && <span className="text-sm">Team</span>}
@@ -1385,7 +1421,7 @@ const TestLayout = () => {
       </div>
 
       {/* Main Content Wrapper with Padding */}
-      <div className="flex-1 pr-2 py-2 mt-8">
+      <div className="flex-1 pr-2 py-2 mt-8 relative">
         {/* Card Container */}
         <div className="bg-white rounded-lg shadow border border-gray-200 flex flex-col h-full overflow-hidden">
           {/* Top Navigation */}
@@ -1455,6 +1491,10 @@ const TestLayout = () => {
             <ListView />
           </div>
         </div>
+        <CreateCaseModal
+          isOpen={showCreateCase}
+          onClose={() => setShowCreateCase(false)}
+        />
       </div>
     </div>
   );
