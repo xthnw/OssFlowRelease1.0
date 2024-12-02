@@ -1,5 +1,6 @@
 import "./styles.css";
 import "./index.css";
+import "./datepicker.css";
 import { MedicalDevicePage } from ".//pages/MedicalDevicePage";
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';

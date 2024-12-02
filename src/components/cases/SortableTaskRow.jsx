@@ -164,7 +164,9 @@ export const SortableTaskRow = ({
                     <DatePicker
                         selected={date}
                         onChange={(selectedDate) => {
-                            handleDateUpdate(task.id, selectedDate.toISOString().split('T')[0], status);
+                            const adjustedDate = new Date(selectedDate);
+                            adjustedDate.setHours(12);
+                            handleDateUpdate(task.id, adjustedDate.toISOString().split('T')[0], status);
                             setEditingCell(null);
                         }}
                         dateFormat="yyyy-MM-dd"
@@ -182,7 +184,7 @@ export const SortableTaskRow = ({
                     e.stopPropagation();
                     setEditingCell({ taskId: task.id, field: 'dueDate' });
                 }}
-                className="block truncate cursor-text text-xs text-blue-600"
+                className="block truncate cursor-text text-xs text-teal-600"
             >
                 {date ? date.toLocaleDateString() : "-"}
             </span>
@@ -261,8 +263,8 @@ export const SortableTaskRow = ({
                                 <div
                                     className="flex-shrink-0 w-4 h-4 rounded-full border-2 cursor-pointer flex items-center justify-center"
                                     style={{
-                                        backgroundColor: isCompleted ? "#22C55E" : "transparent",
-                                        borderColor: isCompleted ? "#22C55E" : "#D1D5DB",
+                                        backgroundColor: isCompleted ? "#0D9488" : "transparent",
+                                        borderColor: isCompleted ? "#0D9488" : "#D1D5DB",
                                     }}
                                     onClick={() =>
                                         setCompletedTasks((prev) => ({
@@ -296,7 +298,7 @@ export const SortableTaskRow = ({
                         <div className="col-span-3 flex items-center">
                             {renderAssigneeCell()}
                         </div>
-                        <div className="col-span-1 text-xs text-blue-600 flex items-center">
+                        <div className="col-span-1 text-xs text-teal-600 flex items-center">
                             {renderDateCell()}
                         </div>
                         <div className="col-span-1 text-xs text-gray-500 flex items-center">

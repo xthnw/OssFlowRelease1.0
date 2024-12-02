@@ -1,0 +1,60 @@
+/* เพิ่ม CSS นี้ในไฟล์ CSS ของคุณ */
+.react-datepicker {
+    border: none !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+    border-radius: 1rem !important;
+    font-family: inherit !important;
+  }
+  
+  .react-datepicker__month-container {
+    padding: 0.5rem;
+  }
+  
+  .react-datepicker__header {
+    background: white !important;
+    border-bottom: none !important;
+    padding: 0.5rem !important;
+  }
+  
+  .react-datepicker__day {
+    width: 2rem !important;
+    height: 2rem !important;
+    line-height: 2rem !important;
+    border-radius: 0.5rem !important;
+    margin: 0.2rem !important;
+  }
+  
+  .react-datepicker__day:hover {
+    background-color: #eff6ff !important;
+  }
+  
+  .react-datepicker__day--selected {
+    background-color: #3b82f6 !important;
+    color: white !important;
+  }
+  
+  .react-datepicker__day--selected:hover {
+    background-color: #2563eb !important;
+  }
+  
+  .react-datepicker__day--today {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+  }
+  
+  .react-datepicker__day-name {
+    width: 2rem !important;
+    color: #9ca3af !important;
+  }
+  
+  .react-datepicker__navigation {
+    top: 0.7rem !important;
+  }
+  
+  .react-datepicker__navigation--previous {
+    left: 0.7rem !important;
+  }
+  
+  .react-datepicker__navigation--next {
+    right: 0.7rem !important;
+  }
