@@ -5,7 +5,7 @@ export const TASKS_DATA = {
             name: "Task 125 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]",
             assignees: [
                 { id: 1, avatar: "/avatar1.jpg", name: "John" },
-                { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
+                { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
             ],
             dueDate: "Dec 1",
             comments: 1,
@@ -16,12 +16,12 @@ export const TASKS_DATA = {
                 {
                     id: "8",
                     name: "Task 125 - Initial planning",
-                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" }
                 },
                 {
                     id: "9",
                     name: "Task 125 - CT Scan review",
-                    assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
+                    assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
                 }
             ]
         },
@@ -37,7 +37,43 @@ export const TASKS_DATA = {
                 {
                     id: "10",
                     name: "Task 126 - Patient consultation",
-                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" }
+                }
+            ]
+        },
+        {
+            id: "127",
+            name: "Task 127 - Spine surgery - Dr.ประวิทย์ [รพ.ศิริราช]",
+            assignees: [
+                { id: 4, avatar: "/avatar4.jpg", name: "Tom" },
+                { id: 5, avatar: "/avatar5.jpg", name: "David" }
+            ],
+            dueDate: "Dec 5",
+            comments: 2,
+            taskCode: "127",
+            surgeon: "นพ ประวิทย์",
+            hospital: "โรงพยาบาลศิริราช",
+            subtasks: [
+                {
+                    id: "11",
+                    name: "Task 127 - MRI analysis",
+                    assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" }
+                }
+            ]
+        },
+        {
+            id: "128",
+            name: "Task 128 - Shoulder reconstruction - Dr.สมศักดิ์ [รพ.รามา]",
+            assignees: [{ id: 6, avatar: "/avatar6.jpg", name: "Sarah" }],
+            dueDate: "Dec 7",
+            taskCode: "128",
+            surgeon: "นพ สมศักดิ์",
+            hospital: "โรงพยาบาลรามา",
+            subtasks: [
+                {
+                    id: "12",
+                    name: "Task 128 - Pre-op planning",
+                    assignee: { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
                 }
             ]
         }
@@ -48,7 +84,7 @@ export const TASKS_DATA = {
             name: "Task 124 - Mandible reconstruction - Dr.นนท์ [รพ.ศิริราช]",
             assignees: [
                 { id: 1, avatar: "/avatar1.jpg", name: "John" },
-                { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+                { id: 2, avatar: "/avatar2.jpg", name: "Jane" }
             ],
             dueDate: "Nov 6",
             comments: 2,
@@ -60,47 +96,49 @@ export const TASKS_DATA = {
                     id: "1",
                     name: "Task 124 - Surgical planning review",
                     assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
-                    completed: true,
+                    completed: true
                 },
                 {
                     id: "2",
                     name: "Task 124 - Guide design",
                     assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
                     dueDate: "Nov 6"
-                },
-                {
-                    id: "3",
-                    name: "Task 124 - 3D modeling",
-                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
-                },
-                {
-                    id: "4",
-                    name: "Task 124 - Model fabrication",
-                    assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
-                    tag: "manufacturing"
                 }
             ]
         },
         {
-            id: "123",
-            name: "Task 123 - Dental implant - Dr.ประสิทธิ์ [รพ.ศิริราช]",
-            assignees: [{ id: 4, avatar: "/avatar4.jpg", name: "Tom" }],
-            dueDate: "Nov 10",
+            id: "129",
+            name: "Task 129 - Facial reconstruction - Dr.วิภา [รพ.จุฬา]",
+            assignees: [
+                { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
+                { id: 4, avatar: "/avatar4.jpg", name: "Tom" }
+            ],
+            dueDate: "Nov 8",
             comments: 3,
-            taskCode: "123",
-            surgeon: "นพ ประสิทธิ์",
-            hospital: "โรงพยาบาลศิริราช",
+            taskCode: "129",
+            surgeon: "พญ วิภา",
+            hospital: "โรงพยาบาลจุฬา",
             subtasks: [
                 {
-                    id: "11",
-                    name: "Task 123 - Design review",
-                    assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" }
-                },
+                    id: "13",
+                    name: "Task 129 - 3D modeling",
+                    assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
+                }
+            ]
+        },
+        {
+            id: "130",
+            name: "Task 130 - Skull implant - Dr.พิชัย [รพ.รามา]",
+            assignees: [{ id: 5, avatar: "/avatar5.jpg", name: "David" }],
+            dueDate: "Nov 10",
+            taskCode: "130",
+            surgeon: "นพ พิชัย",
+            hospital: "โรงพยาบาลรามา",
+            subtasks: [
                 {
-                    id: "12",
-                    name: "Task 123 - Final adjustments",
-                    assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" },
-                    tag: "design"
+                    id: "14",
+                    name: "Task 130 - Design review",
+                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" }
                 }
             ]
         }
@@ -119,18 +157,90 @@ export const TASKS_DATA = {
             hospital: "โรงพยาบาลจุฬา",
             subtasks: [
                 {
-                    id: "13",
+                    id: "15",
                     name: "Task 122 - Production setup",
                     assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" },
                     tag: "manufacturing"
-                },
+                }
+            ]
+        },
+        {
+            id: "131",
+            name: "Task 131 - Dental bridge - Dr.สุชาติ [รพ.ศิริราช]",
+            assignees: [{ id: 1, avatar: "/avatar1.jpg", name: "John" }],
+            dueDate: "Nov 18",
+            comments: 1,
+            taskCode: "131",
+            surgeon: "นพ สุชาติ",
+            hospital: "โรงพยาบาลศิริราช",
+            subtasks: [
                 {
-                    id: "14",
-                    name: "Task 122 - Quality inspection",
-                    assignee: { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
+                    id: "16",
+                    name: "Task 131 - Manufacturing",
+                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+                    tag: "manufacturing"
+                }
+            ]
+        },
+        {
+            id: "132",
+            name: "Task 132 - Hip revision surgery - Dr.วินัย [รพ.รามา]",
+            assignees: [
+                { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+                { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
+            ],
+            dueDate: "Nov 20",
+            taskCode: "132",
+            surgeon: "นพ วินัย",
+            hospital: "โรงพยาบาลรามา",
+            subtasks: [
+                {
+                    id: "17",
+                    name: "Task 132 - Quality check",
+                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" }
                 }
             ]
         }
     ],
-    "COMPLETED": []
+    "COMPLETED": [
+        {
+            id: "133",
+            name: "Task 133 - Knee arthroscopy - Dr.ประเสริฐ [รพ.จุฬา]",
+            assignees: [{ id: 4, avatar: "/avatar4.jpg", name: "Tom" }],
+            dueDate: "Nov 1",
+            completed: true,
+            taskCode: "133",
+            surgeon: "นพ ประเสริฐ",
+            hospital: "โรงพยาบาลจุฬา",
+            subtasks: [
+                {
+                    id: "18",
+                    name: "Task 133 - Final report",
+                    assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" },
+                    completed: true
+                }
+            ]
+        },
+        {
+            id: "134",
+            name: "Task 134 - Spinal fusion - Dr.สมหมาย [รพ.ศิริราช]",
+            assignees: [
+                { id: 5, avatar: "/avatar5.jpg", name: "David" },
+                { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
+            ],
+            dueDate: "Oct 25",
+            completed: true,
+            taskCode: "134",
+            surgeon: "นพ สมหมาย",
+            hospital: "โรงพยาบาลศิริราช",
+            subtasks: [
+                {
+                    id: "19",
+                    name: "Task 134 - Case closure",
+                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" },
+                    completed: true
+                }
+            ]
+        }
+    ]
 };

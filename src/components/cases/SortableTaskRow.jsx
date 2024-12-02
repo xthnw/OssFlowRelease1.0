@@ -25,7 +25,7 @@ export const SortableTaskRow = ({
     const [activeDepartment, setActiveDepartment] = useState(null);
     const dropdownRef = useRef(null);
 
-    const handleDoubleClick = (e, field) => {
+    const handleClick = (e, field) => {
         e.stopPropagation();
         setEditingCell({ taskId: task.id, field });
     };
@@ -101,10 +101,9 @@ export const SortableTaskRow = ({
         return (
             <div
                 className="h-full flex items-center"
-                onDoubleClick={(e) => {
+                onClick={(e) => {
                     e.stopPropagation();
                     setEditingCell({ taskId: task.id, field: 'assignees' });
-                    // เมื่อเริ่ม edit ให้ set department แรกเป็น active
                     setActiveDepartment(departmentReference[0].id);
                 }}
             >
@@ -179,7 +178,7 @@ export const SortableTaskRow = ({
 
         return (
             <span
-                onDoubleClick={(e) => {
+                onClick={(e) => {
                     e.stopPropagation();
                     setEditingCell({ taskId: task.id, field: 'dueDate' });
                 }}
@@ -221,7 +220,7 @@ export const SortableTaskRow = ({
 
         return (
             <span
-                onDoubleClick={(e) => handleDoubleClick(e, field)}
+                onClick={(e) => handleClick(e, field)}
                 className="block truncate cursor-text text-xs text-gray-700"
                 style={{ width }}
             >
