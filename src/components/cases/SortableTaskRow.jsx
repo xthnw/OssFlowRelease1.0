@@ -224,7 +224,7 @@ export const SortableTaskRow = ({
                 className="block truncate cursor-text text-xs text-gray-700"
                 style={{ width }}
             >
-                {content}
+                {content || '-'}
             </span>
         );
     };

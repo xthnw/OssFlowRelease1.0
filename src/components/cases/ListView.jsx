@@ -214,7 +214,7 @@ export const ListView = () => {
                     {Object.entries(tasksData).map(([status, tasks]) => (
                         <div
                             key={status}
-                            className="bg-white rounded-lg border border-gray-200 overflow-visible"
+                            className="bg-white rounded-lg py-2 border border-gray-200 overflow-visible"
                         >
                             <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-100">
                                 <div className="flex items-center space-x-3">

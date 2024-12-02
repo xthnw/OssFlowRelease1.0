@@ -204,7 +204,7 @@ export const SortableTaskCard = ({
                 onClick={(e) => handleClick(e, field)}
                 className="block truncate cursor-text text-xs"
             >
-                {content}
+                {content || '-'}
             </span>
         );
     };
