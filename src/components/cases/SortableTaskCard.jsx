@@ -152,7 +152,9 @@ export const SortableTaskCard = ({
                     <DatePicker
                         selected={date}
                         onChange={(selectedDate) => {
-                            handleDateUpdate(task.id, selectedDate.toISOString().split('T')[0], status);
+                            const adjustedDate = new Date(selectedDate);
+                            adjustedDate.setHours(12);
+                            handleDateUpdate(task.id, adjustedDate.toISOString().split('T')[0], status);
                             setEditingCell(null);
                         }}
                         dateFormat="yyyy-MM-dd"
