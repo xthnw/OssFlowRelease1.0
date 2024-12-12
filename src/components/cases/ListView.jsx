@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ChevronRight, ChevronDown, Plus, UserPlus, Check, GripVertical } from 'lucide-react';
+import { ChevronRight, ChevronDown, Plus, UserPlus, Check, GripVertical, Briefcase, Users } from 'lucide-react';
 import { TASKS_DATA } from '../../data/tasksData';
 
 // แยก SortableTaskRow เป็น component แยก
@@ -20,6 +20,8 @@ export const ListView = () => {
     const [editingCell, setEditingCell] = useState(null);
     const [key, setKey] = useState(0);
     const [showDatePicker, setShowDatePicker] = useState({});
+    const [hoveredProject, setHoveredProject] = useState(null);
+    const [hoveredMember, setHoveredMember] = useState(null);  // เพิ่มบรรทัดนี้
 
     const [assigneeReference, setAssigneeReference] = useState([
         { id: 1, name: 'John Doe' },
@@ -33,48 +35,225 @@ export const ListView = () => {
             id: 1,
             name: 'Design',
             members: [
-                { id: 1, name: 'John Design' },
-                { id: 2, name: 'Jane Designer' },
+                {
+                    id: 1,
+                    name: 'John',
+                    projects: [
+                        {
+                            id: 1,
+                            name: 'Case 124 - Mandible reconstruction with fibula flap Dr. แน็ก',
+                            progress: 75,
+                            tasks: [
+                                { id: 1, name: 'Surgical Planning Confirmation' },
+                                { id: 2, name: 'Design Review Meeting' }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            name: 'Case 125 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]',
+                            progress: 30,
+                            tasks: [
+                                { id: 3, name: 'Initial Design' },
+                                { id: 4, name: 'CT Scan Analysis' }
+                            ]
+                        },
+                        {
+                            id: 13,
+                            name: 'Case 149 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]',
+                            progress: 30,
+                            tasks: [
+                                { id: 26, name: 'ออกแบบหน้าตา' },
+                                { id: 27, name: 'ทำวิจัยเกี่ยวกับอุปกรณ์ใหม่' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: 'Jane',
+                    projects: [
+                        {
+                            id: 3,
+                            name: 'Case 138 - Wrist Fracture Dr.โบ๊ท [รพ.บางพลี]',
+                            progress: 60,
+                            tasks: [
+                                { id: 5, name: 'Reconstruction Design' },
+                                { id: 6, name: 'Implant Planning' }
+                            ]
+                        }
+                    ]
+                }
             ]
         },
         {
             id: 2,
             name: 'Polymer Production',
             members: [
-                { id: 3, name: 'Bob Polymer' },
-                { id: 4, name: 'Alice Production' },
+                {
+                    id: 3,
+                    name: 'Bob',
+                    projects: [
+                        {
+                            id: 4,
+                            name: 'Case 132 - Femur cage - หมอวิช [คณะแพทย์ มอ.]',
+                            progress: 45,
+                            tasks: [
+                                { id: 7, name: 'Material Preparation' },
+                                { id: 8, name: 'Production Setup' },
+                                { id: 9, name: 'Quality Check' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: 'Alice',
+                    projects: [
+                        {
+                            id: 5,
+                            name: 'Case 140 - Malunion bone - หมอชิตวีร์',
+                            progress: 80,
+                            tasks: [
+                                { id: 10, name: 'Production Process' },
+                                { id: 11, name: 'Surface Treatment' }
+                            ]
+                        }
+                    ]
+                }
             ]
         },
         {
             id: 3,
             name: 'Metal Production',
             members: [
-                { id: 5, name: 'Charlie Metal' },
-                { id: 6, name: 'David Steel' },
+                {
+                    id: 5,
+                    name: 'Charlie',
+                    projects: []
+                },
+                {
+                    id: 6,
+                    name: 'David',
+                    projects: [
+                        {
+                            id: 6,
+                            name: 'Case 126 - Hip replacement - Dr.วิชัย [รพ.รามา]',
+                            progress: 65,
+                            tasks: [
+                                { id: 12, name: 'Metal Component Production' },
+                                { id: 13, name: 'Surface Finishing' }
+                            ]
+                        }
+                    ]
+                }
             ]
         },
         {
             id: 4,
             name: 'QA/QC',
             members: [
-                { id: 7, name: 'Eva Quality' },
-                { id: 8, name: 'Frank Control' },
+                {
+                    id: 7,
+                    name: 'Eva Quality',
+                    projects: [
+                        {
+                            id: 7,
+                            name: 'Case 124 - Mandible reconstruction with fibula flap Dr. แน็ก',
+                            progress: 85,
+                            tasks: [
+                                { id: 14, name: 'Final Inspection' },
+                                { id: 15, name: 'Documentation Review' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 8,
+                    name: 'Frank Control',
+                    projects: [
+                        {
+                            id: 8,
+                            name: 'Case 132 - Femur cage - หมอวิช [คณะแพทย์ มอ.]',
+                            progress: 40,
+                            tasks: [
+                                { id: 16, name: 'Quality Testing' },
+                                { id: 17, name: 'Measurement Verification' }
+                            ]
+                        }
+                    ]
+                }
             ]
         },
         {
             id: 5,
             name: 'Packaging',
             members: [
-                { id: 9, name: 'Grace Pack' },
-                { id: 10, name: 'Henry Box' },
+                {
+                    id: 9,
+                    name: 'Grace Pack',
+                    projects: [
+                        {
+                            id: 9,
+                            name: 'Case 138 - Wrist Fracture Dr.โบ๊ท [รพ.บางพลี]',
+                            progress: 30,
+                            tasks: [
+                                { id: 18, name: 'Sterilization Preparation' },
+                                { id: 19, name: 'Package Sealing' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 10,
+                    name: 'Henry Box',
+                    projects: [
+                        {
+                            id: 10,
+                            name: 'Case 140 - Malunion bone - หมอชิตวีร์',
+                            progress: 20,
+                            tasks: [
+                                { id: 20, name: 'Documentation Preparation' },
+                                { id: 21, name: 'Label Verification' }
+                            ]
+                        }
+                    ]
+                }
             ]
         },
         {
             id: 6,
             name: 'Delivery',
             members: [
-                { id: 11, name: 'Ian Delivery' },
-                { id: 12, name: 'Jack Transport' },
+                {
+                    id: 11,
+                    name: 'Ian Delivery',
+                    projects: [
+                        {
+                            id: 11,
+                            name: 'Case 126 - Hip replacement - Dr.วิชัย [รพ.รามา]',
+                            progress: 25,
+                            tasks: [
+                                { id: 22, name: 'Route Planning' },
+                                { id: 23, name: 'Delivery Schedule Confirmation' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 12,
+                    name: 'Jack Transport',
+                    projects: [
+                        {
+                            id: 12,
+                            name: 'Case 132 - Femur cage - หมอวิช [คณะแพทย์ มอ.]',
+                            progress: 15,
+                            tasks: [
+                                { id: 24, name: 'Transport Arrangement' },
+                                { id: 25, name: 'Delivery Documentation' }
+                            ]
+                        }
+                    ]
+                }
             ]
         }
     ]);
@@ -284,6 +463,10 @@ export const ListView = () => {
                                                             handleAssigneeUpdate={handleAssigneeUpdate}
                                                             showDatePicker={showDatePicker}
                                                             setShowDatePicker={setShowDatePicker}
+                                                            hoveredProject={hoveredProject}
+                                                            setHoveredProject={setHoveredProject}
+                                                            hoveredMember={hoveredMember}
+                                                            setHoveredMember={setHoveredMember}
                                                         />
                                                         {expandedTasks[task.id] && task.subtasks?.length > 0 && (
                                                             <Droppable
@@ -316,6 +499,10 @@ export const ListView = () => {
                                                                                 handleAssigneeUpdate={handleAssigneeUpdate}
                                                                                 showDatePicker={showDatePicker}
                                                                                 setShowDatePicker={setShowDatePicker}
+                                                                                hoveredProject={hoveredProject}
+                                                                                setHoveredProject={setHoveredProject}
+                                                                                hoveredMember={hoveredMember}
+                                                                                setHoveredMember={setHoveredMember}
                                                                             />
                                                                         ))}
                                                                         {providedSubtask.placeholder}

@@ -9,6 +9,8 @@ import { SurgeonsPage } from './pages/SurgeonsPage';
 import { TeamPage } from './pages/TeamPage';
 import { MainLayout } from './/components/layout/MainLayout';
 import { Test } from './pages/Test';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
 import { Merge } from './/components/Merge';
 
 export default function App() {
@@ -19,6 +21,8 @@ export default function App() {
       <Route path="/hospitals" element={<MainLayout><HospitalsPage /></MainLayout>} />
       <Route path="/surgeons" element={<MainLayout><SurgeonsPage /></MainLayout>} />
       <Route path="/team" element={<MainLayout><TeamPage /></MainLayout>} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mergeallfortest" element={<Merge />} />
     </Routes>

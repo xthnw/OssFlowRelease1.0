@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { UserPlus, Check, GripVertical, ChevronRight, Plus } from 'lucide-react';
+import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users } from 'lucide-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,6 +21,11 @@ export const SortableTaskRow = ({
     handleAssigneeUpdate,
     showDatePicker,
     setShowDatePicker,
+    hoveredProject,
+    setHoveredProject,
+    hoveredMember,
+    setHoveredMember,
+
 }) => {
     const [activeDepartment, setActiveDepartment] = useState(null);
     const dropdownRef = useRef(null);
@@ -30,15 +35,34 @@ export const SortableTaskRow = ({
         setEditingCell({ taskId: task.id, field });
     };
 
+    // เพิ่มฟังก์ชัน calculate workload percentage
+    const calculateWorkloadPercentage = (member, deptRef) => {
+        // นับจำนวนงานทั้งหมดในระบบ
+        const totalTasks = deptRef.reduce((total, dept) => {
+            return total + dept.members.reduce((memberTotal, m) => {
+                return memberTotal + m.projects.reduce((projectTotal, p) => {
+                    return projectTotal + p.tasks.length;
+                }, 0);
+            }, 0);
+        }, 0);
+
+        // นับจำนวนงานของ member
+        const memberTasks = member.projects.reduce((total, project) => {
+            return total + project.tasks.length;
+        }, 0);
+
+        // คำนวณเปอร์เซ็นต์
+        return Math.round((memberTasks / totalTasks) * 100);
+    };
+
     const renderAssigneeCell = () => {
         const isEditing = editingCell?.taskId === task.id && editingCell?.field === 'assignees';
+        const [selectedMemberForDetails, setSelectedMemberForDetails] = useState(null);
 
         if (isEditing) {
             return (
-                <div className="relative h-full" ref={dropdownRef}>
-                    <div
-                        className="flex -space-x-1 cursor-pointer"
-                    >
+                <div className="relative" ref={dropdownRef}>
+                    <div className="flex -space-x-1">
                         {(task.assignees || []).map((assignee) => (
                             <div
                                 key={assignee.id}
@@ -49,25 +73,25 @@ export const SortableTaskRow = ({
                         ))}
                     </div>
 
-                    <div className="absolute z-50 mt-1 bg-white rounded-md shadow-lg border flex">
+                    <div className="absolute z-50 mt-1 bg-white rounded-lg shadow-lg border flex">
                         {/* Department list */}
                         <div className="w-48 border-r">
                             {departmentReference.map((dept) => (
                                 <div
                                     key={dept.id}
-                                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between ${activeDepartment === dept.id ? 'bg-gray-100' : ''
+                                    className={`px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${activeDepartment === dept.id ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
                                         }`}
                                     onClick={() => setActiveDepartment(dept.id)}
                                 >
-                                    <span>{dept.name}</span>
+                                    <span className="text-xs text-gray-600">{dept.name}</span>
                                     <ChevronRight className="w-4 h-4 text-gray-400" />
                                 </div>
                             ))}
                         </div>
 
-                        {/* Members list - shows when department is selected */}
+                        {/* Members list */}
                         {activeDepartment && (
-                            <div className="w-48 py-1">
+                            <div className="w-48 border-r">
                                 {departmentReference
                                     .find(d => d.id === activeDepartment)
                                     ?.members.map((member) => {
@@ -75,26 +99,123 @@ export const SortableTaskRow = ({
                                         return (
                                             <div
                                                 key={member.id}
-                                                className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between ${isSelected ? 'bg-blue-50' : ''
+                                                className={`px-4 py-2.5 cursor-pointer hover:bg-gray-50 transition-colors ${isSelected ? '' : ''
                                                     }`}
-                                                onClick={(e) => {
-                                                    const newAssignees = isSelected
-                                                        ? task.assignees.filter(a => a.id !== member.id)
-                                                        : [...(task.assignees || []), member];
-                                                    handleAssigneeUpdate(task.id, newAssignees, status);
-                                                    // ไม่ปิด dropdown หลังจากเลือก
-                                                    e.stopPropagation();
-                                                }}
+                                                onClick={() => setSelectedMemberForDetails(member)}
                                             >
-                                                <span>{member.name}</span>
-                                                {isSelected && <Check className="w-4 h-4 text-blue-600" />}
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-gray-600">{member.name}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        {isSelected && <Check className="w-4 h-4 text-blue-600" />}
+                                                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         );
                                     })}
                             </div>
                         )}
+
+                        {selectedMemberForDetails && (
+                            <div className="w-96 py-2 bg-white border-l">
+                                <div className="px-4 pb-4">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="text-md font-medium">{selectedMemberForDetails.name}</div>
+                                        <div className="flex items-center gap-2">
+                                            {/* เพิ่มปุ่ม assign */}
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    const isSelected = task.assignees?.some(a => a.id === selectedMemberForDetails.id);
+                                                    const newAssignees = isSelected
+                                                        ? task.assignees.filter(a => a.id !== selectedMemberForDetails.id)
+                                                        : [...(task.assignees || []), selectedMemberForDetails];
+                                                    handleAssigneeUpdate(task.id, newAssignees, status);
+                                                }}
+                                                className={`px-3 py-1 rounded-md text-xs transition-colors ${task.assignees?.some(a => a.id === selectedMemberForDetails.id)
+                                                    ? 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                                                    : 'bg-gray-100 hover:bg-gray-200'
+                                                    }`}
+                                            >
+                                                {task.assignees?.some(a => a.id === selectedMemberForDetails.id) ? 'Assigned ✓' : 'Assign'}
+                                            </button>
+                                            {/* Workload percentage */}
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xs text-gray-500">
+                                                    {calculateWorkloadPercentage(selectedMemberForDetails, departmentReference)}%
+                                                </span>
+                                                <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                    <div
+                                                        className="h-full bg-blue-500"
+                                                        style={{
+                                                            width: `${calculateWorkloadPercentage(selectedMemberForDetails, departmentReference)}%`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-4 text-xs text-gray-600">
+                                        <div className="flex items-center gap-1">
+                                            <Briefcase size={16} />
+                                            <span>{selectedMemberForDetails.projects.reduce((total, proj) => total + proj.tasks.length, 0)} งาน</span>
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <Users size={16} />
+                                            <span>{selectedMemberForDetails.projects.length} โครงการ</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-8 px-4">
+                                    {selectedMemberForDetails.projects.map(project => (
+                                        <div
+                                            key={project.id}
+                                            className="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                                            onMouseEnter={() => setHoveredProject(project)}
+                                            onMouseLeave={() => setHoveredProject(null)}
+                                        >
+                                            <div className="flex flex-col gap-2">
+                                                <span className="font-medium text-xs">{project.name}</span>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="h-1.5 flex-grow bg-gray-200 rounded-full overflow-hidden">
+                                                        <div
+                                                            className="h-full bg-blue-500 transition-all duration-300"
+                                                            style={{ width: `${project.progress}%` }}
+                                                        />
+                                                    </div>
+                                                    <span className="text-xs text-gray-500">{project.progress}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Tasks list */}
+                        {hoveredProject && (
+                            <div className="w-72 py-2 bg-white border-l">
+                                <div className="px-4 pb-2">
+                                    <div className="text-md font-medium">งานที่รับผิดชอบ</div>
+                                </div>
+                                <div className="space-y-2 px-4">
+                                    {hoveredProject.tasks.map(task => (
+                                        <div
+                                            key={task.id}
+                                            className="p-3 bg-gray-50 rounded-lg text-xs cursor-pointer hover:bg-gray-100 transition-colors"
+                                        >
+                                            {task.name}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 </div>
+
             );
         }
 

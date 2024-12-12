@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Home, Folder, Users, ChevronDown, ChevronRight, Plus } from 'lucide-react';
+import { Menu, Home, Folder, Users, ChevronDown, ChevronRight, Plus, CircleGauge } from 'lucide-react';
 import { MOCK_DATA } from '../../data/mockData';
 import { Link } from 'react-router-dom';
 
@@ -41,6 +41,10 @@ export const Sidebar = ({ setShowCreateCase }) => {
                     <Home className="w-4 h-4" />
                     {!isCollapsed && <span className="text-sm">Home</span>}
                 </Link>
+                <Link to="/" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+                    <CircleGauge className="w-4 h-4" />
+                    {!isCollapsed && <span className="text-sm">Dashboard</span>}
+                </Link>
                 <button
                     className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center justify-between"
                     onClick={() => setExpandedProjects(!expandedProjects)}
@@ -80,7 +84,7 @@ export const Sidebar = ({ setShowCreateCase }) => {
                 )}
                 <Link to="/team" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
                     <Users className="w-4 h-4" />
-                    {!isCollapsed && <span className="text-sm">Team</span>}
+                    {!isCollapsed && <span className="text-sm">People</span>}
                 </Link>
             </div>
         </div>
