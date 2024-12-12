@@ -2,9 +2,9 @@ export const TASKS_DATA = {
     "NEW COMING": [
         {
             id: "125",
-            name: "Task 125 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]",
+            name: "Case 125 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]",
             assignees: [
-                { id: 1, avatar: "/avatar1.jpg", name: "John" },
+                { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
                 { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
             ],
             dueDate: "Dec 1",
@@ -15,20 +15,20 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "8",
-                    name: "Task 125 - Initial planning",
-                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" }
+                    name: "Case 125 - Initial planning",
+                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" }
                 },
                 {
                     id: "9",
-                    name: "Task 125 - CT Scan review",
+                    name: "Case 125 - CT Scan review",
                     assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
                 }
             ]
         },
         {
             id: "126",
-            name: "Task 126 - Hip replacement surgery - Dr.วิชัย [รพ.รามา]",
-            assignees: [{ id: 2, avatar: "/avatar2.jpg", name: "Jane" }],
+            name: "Case 126 - Hip replacement surgery - Dr.วิชัย [รพ.รามา]",
+            assignees: [{ id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" }],
             dueDate: "Dec 3",
             taskCode: "126",
             surgeon: "นพ วิชัย",
@@ -36,17 +36,17 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "10",
-                    name: "Task 126 - Patient consultation",
-                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" }
+                    name: "Case 126 - Patient consultation",
+                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" }
                 }
             ]
         },
         {
             id: "127",
-            name: "Task 127 - Spine surgery - Dr.ประวิทย์ [รพ.ศิริราช]",
+            name: "Case 127 - Spine surgery - Dr.ประวิทย์ [รพ.ศิริราช]",
             assignees: [
                 { id: 4, avatar: "/avatar4.jpg", name: "Tom" },
-                { id: 5, avatar: "/avatar5.jpg", name: "David" }
+                { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" }
             ],
             dueDate: "Dec 5",
             comments: 2,
@@ -56,14 +56,14 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "11",
-                    name: "Task 127 - MRI analysis",
+                    name: "Case 127 - MRI analysis",
                     assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" }
                 }
             ]
         },
         {
             id: "128",
-            name: "Task 128 - Shoulder reconstruction - Dr.สมศักดิ์ [รพ.รามา]",
+            name: "Case 128 - Shoulder reconstruction - Dr.สมศักดิ์ [รพ.รามา]",
             assignees: [{ id: 6, avatar: "/avatar6.jpg", name: "Sarah" }],
             dueDate: "Dec 7",
             taskCode: "128",
@@ -72,7 +72,7 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "12",
-                    name: "Task 128 - Pre-op planning",
+                    name: "Case 128 - Pre-op planning",
                     assignee: { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
                 }
             ]
@@ -81,10 +81,10 @@ export const TASKS_DATA = {
     "PLANNING AND DESIGN": [
         {
             id: "124",
-            name: "Task 124 - Mandible reconstruction - Dr.นนท์ [รพ.ศิริราช]",
+            name: "Case 124 - Mandible reconstruction - Dr.นนท์ [รพ.ศิริราช]",
             assignees: [
-                { id: 1, avatar: "/avatar1.jpg", name: "John" },
-                { id: 2, avatar: "/avatar2.jpg", name: "Jane" }
+                { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
+                { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" }
             ],
             dueDate: "Nov 6",
             comments: 2,
@@ -94,21 +94,21 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "1",
-                    name: "Task 124 - Surgical planning review",
-                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+                    name: "Case 124 - Surgical planning review",
+                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
                     completed: true
                 },
                 {
                     id: "2",
-                    name: "Task 124 - Guide design",
-                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+                    name: "Case 124 - Guide design",
+                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" },
                     dueDate: "Nov 6"
                 }
             ]
         },
         {
             id: "129",
-            name: "Task 129 - Facial reconstruction - Dr.วิภา [รพ.จุฬา]",
+            name: "Case 129 - Facial reconstruction - Dr.วิภา [รพ.จุฬา]",
             assignees: [
                 { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
                 { id: 4, avatar: "/avatar4.jpg", name: "Tom" }
@@ -121,15 +121,15 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "13",
-                    name: "Task 129 - 3D modeling",
+                    name: "Case 129 - 3D modeling",
                     assignee: { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
                 }
             ]
         },
         {
             id: "130",
-            name: "Task 130 - Skull implant - Dr.พิชัย [รพ.รามา]",
-            assignees: [{ id: 5, avatar: "/avatar5.jpg", name: "David" }],
+            name: "Case 130 - Skull implant - Dr.พิชัย [รพ.รามา]",
+            assignees: [{ id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" }],
             dueDate: "Nov 10",
             taskCode: "130",
             surgeon: "นพ พิชัย",
@@ -137,8 +137,8 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "14",
-                    name: "Task 130 - Design review",
-                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" }
+                    name: "Case 130 - Design review",
+                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" }
                 }
             ]
         }
@@ -146,9 +146,9 @@ export const TASKS_DATA = {
     "IN PROGRESS": [
         {
             id: "122",
-            name: "Task 122 - Cranial implant - Dr.มานะ [รพ.จุฬา]",
+            name: "Case 122 - Cranial implant - Dr.มานะ [รพ.จุฬา]",
             assignees: [
-                { id: 5, avatar: "/avatar5.jpg", name: "David" },
+                { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" },
                 { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
             ],
             dueDate: "Nov 15",
@@ -158,16 +158,16 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "15",
-                    name: "Task 122 - Production setup",
-                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" },
+                    name: "Case 122 - Production setup",
+                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" },
                     tag: "manufacturing"
                 }
             ]
         },
         {
             id: "131",
-            name: "Task 131 - Dental bridge - Dr.สุชาติ [รพ.ศิริราช]",
-            assignees: [{ id: 1, avatar: "/avatar1.jpg", name: "John" }],
+            name: "Case 131 - Dental bridge - Dr.สุชาติ [รพ.ศิริราช]",
+            assignees: [{ id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" }],
             dueDate: "Nov 18",
             comments: 1,
             taskCode: "131",
@@ -176,17 +176,17 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "16",
-                    name: "Task 131 - Manufacturing",
-                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+                    name: "Case 131 - Manufacturing",
+                    assignee: { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
                     tag: "manufacturing"
                 }
             ]
         },
         {
             id: "132",
-            name: "Task 132 - Hip revision surgery - Dr.วินัย [รพ.รามา]",
+            name: "Case 132 - Hip revision surgery - Dr.วินัย [รพ.รามา]",
             assignees: [
-                { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+                { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" },
                 { id: 3, avatar: "/avatar3.jpg", name: "Mary" }
             ],
             dueDate: "Nov 20",
@@ -196,8 +196,8 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "17",
-                    name: "Task 132 - Quality check",
-                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" }
+                    name: "Case 132 - Quality check",
+                    assignee: { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" }
                 }
             ]
         }
@@ -205,7 +205,7 @@ export const TASKS_DATA = {
     "COMPLETED": [
         {
             id: "133",
-            name: "Task 133 - Knee arthroscopy - Dr.ประเสริฐ [รพ.จุฬา]",
+            name: "Case 133 - Knee arthroscopy - Dr.ประเสริฐ [รพ.จุฬา]",
             assignees: [{ id: 4, avatar: "/avatar4.jpg", name: "Tom" }],
             dueDate: "Nov 1",
             completed: true,
@@ -215,7 +215,7 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "18",
-                    name: "Task 133 - Final report",
+                    name: "Case 133 - Final report",
                     assignee: { id: 4, avatar: "/avatar4.jpg", name: "Tom" },
                     completed: true
                 }
@@ -223,9 +223,9 @@ export const TASKS_DATA = {
         },
         {
             id: "134",
-            name: "Task 134 - Spinal fusion - Dr.สมหมาย [รพ.ศิริราช]",
+            name: "Case 134 - Spinal fusion - Dr.สมหมาย [รพ.ศิริราช]",
             assignees: [
-                { id: 5, avatar: "/avatar5.jpg", name: "David" },
+                { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" },
                 { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
             ],
             dueDate: "Oct 25",
@@ -236,8 +236,8 @@ export const TASKS_DATA = {
             subtasks: [
                 {
                     id: "19",
-                    name: "Task 134 - Case closure",
-                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" },
+                    name: "Case 134 - Case closure",
+                    assignee: { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" },
                     completed: true
                 }
             ]

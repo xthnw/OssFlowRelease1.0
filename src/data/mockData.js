@@ -1,7 +1,7 @@
 export const MOCK_DATA = {
     assignees: [
-        { id: 1, name: "John Doe" },
-        { id: 2, name: "Jane Smith" },
+        { id: 1, name: "Karintip Siriwongsakulchai" },
+        { id: 2, name: "Pacharawat Santisuk" },
         { id: 3, name: "Mike Johnson" },
     ],
     surgeons: [

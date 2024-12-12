@@ -5,6 +5,7 @@ import { TASKS_DATA } from '../../data/tasksData';
 
 // แยก SortableTaskRow เป็น component แยก
 import { SortableTaskRow } from './SortableTaskRow';
+import { MagicLinkDialog } from './MagicLink';
 
 export const ListView = () => {
     const [tasksData, setTasksData] = useState(TASKS_DATA);
@@ -23,10 +24,23 @@ export const ListView = () => {
     const [hoveredProject, setHoveredProject] = useState(null);
     const [hoveredMember, setHoveredMember] = useState(null);  // เพิ่มบรรทัดนี้
 
+    const [isMagicLinkOpen, setIsMagicLinkOpen] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState(null);
+    const handleShare = (taskId) => {
+        setSelectedTaskId(taskId);
+        setIsMagicLinkOpen(true);
+    };
+
+    const handleDelete = (taskId) => {
+        if (window.confirm('Are you sure?')) {
+            alert(`Delete task ${taskId}`);
+        }
+    };
+
     const [assigneeReference, setAssigneeReference] = useState([
-        { id: 1, name: 'John Doe' },
-        { id: 2, name: 'Jane Smith' },
-        { id: 3, name: 'Bob Johnson' },
+        { id: 1, name: 'Karintip Siriwongsakulchai' },
+        { id: 2, name: 'Pacharawat Santisuk' },
+        { id: 3, name: 'Janwimon Kaewwilai' },
         // Add more reference data as needed
     ]);
 
@@ -37,7 +51,7 @@ export const ListView = () => {
             members: [
                 {
                     id: 1,
-                    name: 'John',
+                    name: 'Janwimon Kaewwilai',
                     projects: [
                         {
                             id: 1,
@@ -70,7 +84,7 @@ export const ListView = () => {
                 },
                 {
                     id: 2,
-                    name: 'Jane',
+                    name: 'Thanyakan Satapornsiri',
                     projects: [
                         {
                             id: 3,
@@ -91,7 +105,7 @@ export const ListView = () => {
             members: [
                 {
                     id: 3,
-                    name: 'Bob',
+                    name: 'Thitirat Pitijamroen',
                     projects: [
                         {
                             id: 4,
@@ -107,7 +121,7 @@ export const ListView = () => {
                 },
                 {
                     id: 4,
-                    name: 'Alice',
+                    name: 'Kanokjan Mahametee',
                     projects: [
                         {
                             id: 5,
@@ -128,12 +142,12 @@ export const ListView = () => {
             members: [
                 {
                     id: 5,
-                    name: 'Charlie',
+                    name: 'Wanaporn Patanakosol',
                     projects: []
                 },
                 {
                     id: 6,
-                    name: 'David',
+                    name: 'Preeyapat Chokchai',
                     projects: [
                         {
                             id: 6,
@@ -154,7 +168,7 @@ export const ListView = () => {
             members: [
                 {
                     id: 7,
-                    name: 'Eva Quality',
+                    name: 'Niramat Kaewwilai',
                     projects: [
                         {
                             id: 7,
@@ -169,7 +183,7 @@ export const ListView = () => {
                 },
                 {
                     id: 8,
-                    name: 'Frank Control',
+                    name: 'Kerikwan Somboonprawat',
                     projects: [
                         {
                             id: 8,
@@ -190,7 +204,7 @@ export const ListView = () => {
             members: [
                 {
                     id: 9,
-                    name: 'Grace Pack',
+                    name: 'Pattamon Kittipattra',
                     projects: [
                         {
                             id: 9,
@@ -205,7 +219,7 @@ export const ListView = () => {
                 },
                 {
                     id: 10,
-                    name: 'Henry Box',
+                    name: 'Kanokkorn Kittisompong',
                     projects: [
                         {
                             id: 10,
@@ -226,7 +240,7 @@ export const ListView = () => {
             members: [
                 {
                     id: 11,
-                    name: 'Ian Delivery',
+                    name: 'Nittha Patanapreecha',
                     projects: [
                         {
                             id: 11,
@@ -241,7 +255,7 @@ export const ListView = () => {
                 },
                 {
                     id: 12,
-                    name: 'Jack Transport',
+                    name: 'Peerada Jaraswong',
                     projects: [
                         {
                             id: 12,
@@ -430,12 +444,13 @@ export const ListView = () => {
                                 <>
                                     <div className="grid grid-cols-12 gap-4 px-6 py-2 border-b text-xs text-gray-500">
                                         <div className="col-span-4">Name</div>
-                                        <div className="col-span-3">Assignee</div>
+                                        <div className="col-span-2">Assignee</div>
                                         <div className="col-span-1">Due date</div>
                                         <div className="col-span-1">Comments</div>
                                         <div className="col-span-1">Task Code</div>
                                         <div className="col-span-1">Surgeons</div>
                                         <div className="col-span-1">Hospitals</div>
+                                        <div className="col-span-1">Actions</div>
                                     </div>
 
                                     <Droppable droppableId={status} type="task">
@@ -467,6 +482,8 @@ export const ListView = () => {
                                                             setHoveredProject={setHoveredProject}
                                                             hoveredMember={hoveredMember}
                                                             setHoveredMember={setHoveredMember}
+                                                            onShare={handleShare}
+                                                            onDelete={handleDelete}
                                                         />
                                                         {expandedTasks[task.id] && task.subtasks?.length > 0 && (
                                                             <Droppable
@@ -503,6 +520,7 @@ export const ListView = () => {
                                                                                 setHoveredProject={setHoveredProject}
                                                                                 hoveredMember={hoveredMember}
                                                                                 setHoveredMember={setHoveredMember}
+                                                                                onDelete={handleDelete}
                                                                             />
                                                                         ))}
                                                                         {providedSubtask.placeholder}
@@ -523,6 +541,14 @@ export const ListView = () => {
                                             <span>Add Task</span>
                                         </button>
                                     </div>
+                                    <MagicLinkDialog
+                                        isOpen={isMagicLinkOpen}
+                                        onClose={() => {
+                                            setIsMagicLinkOpen(false);
+                                            setSelectedTaskId(null);
+                                        }}
+                                        taskId={selectedTaskId}
+                                    />
                                 </>
                             )}
                         </div>

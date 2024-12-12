@@ -6,11 +6,11 @@ export const TopBar = () => {
         <div className="h-14 border-b flex items-center justify-between px-4">
             {/* Breadcrumb */}
             <div className="flex items-center text-sm text-gray-600">
-                <span>Team Space</span>
+                <span>OssFlow Space</span>
                 <ChevronRight className="w-4 h-4 mx-1" />
-                <span>Projects</span>
+                <span>Cases</span>
                 <ChevronRight className="w-4 h-4 mx-1" />
-                <span className="font-medium text-gray-900">Task 1</span>
+                <span className="font-medium text-gray-900">Medical Device</span>
             </div>
 
             {/* Right Actions */}

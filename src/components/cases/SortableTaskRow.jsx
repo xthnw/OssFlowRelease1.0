@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users } from 'lucide-react';
+import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users, Share2, Trash2 } from 'lucide-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -25,6 +25,7 @@ export const SortableTaskRow = ({
     setHoveredProject,
     hoveredMember,
     setHoveredMember,
+    onShare,
 
 }) => {
     const [activeDepartment, setActiveDepartment] = useState(null);
@@ -120,7 +121,7 @@ export const SortableTaskRow = ({
                             <div className="w-96 py-2 bg-white border-l">
                                 <div className="px-4 pb-4">
                                     <div className="flex items-center justify-between mb-3">
-                                        <div className="text-md font-medium">{selectedMemberForDetails.name}</div>
+                                        <div className="text-sm font-medium">{selectedMemberForDetails.name}</div>
                                         <div className="flex items-center gap-2">
                                             {/* เพิ่มปุ่ม assign */}
                                             <button
@@ -416,7 +417,7 @@ export const SortableTaskRow = ({
                             </div>
                         </div>
 
-                        <div className="col-span-3 flex items-center">
+                        <div className="col-span-2 flex items-center">
                             {renderAssigneeCell()}
                         </div>
                         <div className="col-span-1 text-xs text-teal-600 flex items-center">
@@ -433,6 +434,29 @@ export const SortableTaskRow = ({
                         </div>
                         <div className="col-span-1 text-xs text-gray-600 truncate flex items-center">
                             {renderEditableCell('hospital', task.hospital || '-')}
+                        </div>
+                        {/* เพิ่ม Actions column */}
+                        <div className="col-span-1 flex items-center gap-2">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDelete(task.id);
+                                }}
+                                className="p-1 hover:bg-gray-200 rounded"
+                            >
+                                <Trash2 size={14} className="text-gray-600 hover:text-red-500" />
+                            </button>
+                            {!isSubtask && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onShare(task.id);
+                                    }}
+                                    className="p-1 hover:bg-gray-200 rounded"
+                                >
+                                    <Share2 size={14} className="text-gray-600" />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

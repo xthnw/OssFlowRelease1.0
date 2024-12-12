@@ -18,48 +18,48 @@ export const BoardView = ({ tasksData, setTasksData }) => {
             id: 1,
             name: 'Design',
             members: [
-                { id: 1, name: 'John Design' },
-                { id: 2, name: 'Jane Designer' },
+                { id: 1, name: 'Janwimon Kaewwilai Design' },
+                { id: 2, name: 'Thanyakan Satapornsiri Designer' },
             ]
         },
         {
             id: 2,
             name: 'Polymer Production',
             members: [
-                { id: 3, name: 'Bob Polymer' },
-                { id: 4, name: 'Alice Production' },
+                { id: 3, name: 'Thitirat Pitijamroen Polymer' },
+                { id: 4, name: 'Kanokjan Mahametee Production' },
             ]
         },
         {
             id: 3,
             name: 'Metal Production',
             members: [
-                { id: 5, name: 'Charlie Metal' },
-                { id: 6, name: 'David Steel' },
+                { id: 5, name: 'Wanaporn Patanakosol Metal' },
+                { id: 6, name: 'Preeyapat Chokchai Steel' },
             ]
         },
         {
             id: 4,
             name: 'QA/QC',
             members: [
-                { id: 7, name: 'Eva Quality' },
-                { id: 8, name: 'Frank Control' },
+                { id: 7, name: 'Niramat Kaewwilai' },
+                { id: 8, name: 'Kerikwan Somboonprawat' },
             ]
         },
         {
             id: 5,
             name: 'Packaging',
             members: [
-                { id: 9, name: 'Grace Pack' },
-                { id: 10, name: 'Henry Box' },
+                { id: 9, name: 'Pattamon Kittipattra' },
+                { id: 10, name: 'Kanokkorn Kittisompong' },
             ]
         },
         {
             id: 6,
             name: 'Delivery',
             members: [
-                { id: 11, name: 'Ian Delivery' },
-                { id: 12, name: 'Jack Transport' },
+                { id: 11, name: 'Nittha Patanapreecha' },
+                { id: 12, name: 'Peerada Jaraswong' },
             ]
         }
     ]);

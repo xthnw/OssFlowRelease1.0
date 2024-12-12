@@ -41,7 +41,7 @@ const TASKS_DATA = {
       id: "125",
       name: "Task 125 - Knee replacement surgery - Dr.สมชาย [รพ.จุฬา]",
       assignees: [
-        { id: 1, avatar: "/avatar1.jpg", name: "John" },
+        { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
         { id: 3, avatar: "/avatar3.jpg", name: "Mary" },
       ],
       dueDate: "Dec 1",
@@ -53,7 +53,7 @@ const TASKS_DATA = {
         {
           id: "8",
           name: "Task 125 - Initial planning",
-          assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+          assignee: { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
         },
         {
           id: "9",
@@ -65,7 +65,7 @@ const TASKS_DATA = {
     {
       id: "126",
       name: "Task 126 - Hip replacement surgery - Dr.วิชัย [รพ.รามา]",
-      assignees: [{ id: 2, avatar: "/avatar2.jpg", name: "Jane" }],
+      assignees: [{ id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" }],
       dueDate: "Dec 3",
       taskCode: "126",
       surgeon: "นพ วิชัย",
@@ -74,7 +74,7 @@ const TASKS_DATA = {
         {
           id: "10",
           name: "Task 126 - Patient consultation",
-          assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+          assignee: { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" },
         }
       ]
     }
@@ -84,8 +84,8 @@ const TASKS_DATA = {
       id: "124",
       name: "Task 124 - Mandible reconstruction - Dr.นนท์ [รพ.ศิริราช]",
       assignees: [
-        { id: 1, avatar: "/avatar1.jpg", name: "John" },
-        { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+        { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
+        { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" },
       ],
       dueDate: "Nov 6",
       comments: 2,
@@ -96,19 +96,19 @@ const TASKS_DATA = {
         {
           id: "1",
           name: "Task 124 - Surgical planning review",
-          assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+          assignee: { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
           completed: true,
         },
         {
           id: "2",
           name: "Task 124 - Guide design",
-          assignee: { id: 2, avatar: "/avatar2.jpg", name: "Jane" },
+          assignee: { id: 2, avatar: "/avatar2.jpg", name: "Thanyakan Satapornsiri" },
           dueDate: "Nov 6"
         },
         {
           id: "3",
           name: "Task 124 - 3D modeling",
-          assignee: { id: 1, avatar: "/avatar1.jpg", name: "John" },
+          assignee: { id: 1, avatar: "/avatar1.jpg", name: "Janwimon Kaewwilai" },
         },
         {
           id: "4",
@@ -147,7 +147,7 @@ const TASKS_DATA = {
       id: "122",
       name: "Task 122 - Cranial implant - Dr.มานะ [รพ.จุฬา]",
       assignees: [
-        { id: 5, avatar: "/avatar5.jpg", name: "David" },
+        { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" },
         { id: 6, avatar: "/avatar6.jpg", name: "Sarah" }
       ],
       dueDate: "Nov 15",
@@ -158,7 +158,7 @@ const TASKS_DATA = {
         {
           id: "13",
           name: "Task 122 - Production setup",
-          assignee: { id: 5, avatar: "/avatar5.jpg", name: "David" },
+          assignee: { id: 5, avatar: "/avatar5.jpg", name: "Preeyapat Chokchai" },
           tag: "manufacturing"
         },
         {
@@ -191,8 +191,8 @@ const ListView = () => {
       id: 1,
       name: 'Design',
       members: [
-        { id: 1, name: 'John Design' },
-        { id: 2, name: 'Jane Designer' },
+        { id: 1, name: 'Janwimon Kaewwilai Design' },
+        { id: 2, name: 'Thanyakan Satapornsiri Designer' },
       ]
     },
     {
@@ -207,32 +207,32 @@ const ListView = () => {
       id: 3,
       name: 'Metal Production',
       members: [
-        { id: 5, name: 'Charlie Metal' },
-        { id: 6, name: 'David Steel' },
+        { id: 5, name: 'Wanaporn Patanakosol Metal' },
+        { id: 6, name: 'Preeyapat Chokchai Steel' },
       ]
     },
     {
       id: 4,
       name: 'QA/QC',
       members: [
-        { id: 7, name: 'Eva Quality' },
-        { id: 8, name: 'Frank Control' },
+        { id: 7, name: 'Niramat Kaewwilai' },
+        { id: 8, name: 'Kerikwan Somboonprawat' },
       ]
     },
     {
       id: 5,
       name: 'Packaging',
       members: [
-        { id: 9, name: 'Grace Pack' },
-        { id: 10, name: 'Henry Box' },
+        { id: 9, name: 'Pattamon Kittipattra' },
+        { id: 10, name: 'Kanokkorn Kittisompong' },
       ]
     },
     {
       id: 6,
       name: 'Delivery',
       members: [
-        { id: 11, name: 'Ian Delivery' },
-        { id: 12, name: 'Jack Transport' },
+        { id: 11, name: 'Nittha Patanapreecha' },
+        { id: 12, name: 'Peerada Jaraswong' },
       ]
     }
   ]);
@@ -813,7 +813,7 @@ export const Merge = () => {
       name: "Design new medical device prototype",
       status: "PLANNING AND DESIGN",
       dueDate: "2024-12-01",
-      assignee: "John Doe",
+      assignee: "Karintip Siriwongsakulchai",
       priority: "high",
     },
     {
@@ -821,7 +821,7 @@ export const Merge = () => {
       name: "Prepare ISO documentation",
       status: "NEW COMING",
       dueDate: "2024-11-28",
-      assignee: "Jane Smith",
+      assignee: "Pacharawat Santisuk",
       priority: "medium",
     },
     {

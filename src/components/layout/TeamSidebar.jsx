@@ -3,7 +3,7 @@ import { Menu, Home, Folder, Users, ChevronDown, ChevronRight, Plus, CircleGauge
 import { MOCK_DATA } from '../../data/mockData';
 import { Link } from 'react-router-dom';
 
-export const Sidebar = ({ setShowCreateCase }) => {
+export const TeamSidebar = ({ setShowCreateCase }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [expandedProjects, setExpandedProjects] = useState(false);
     const [hoveredItem, setHoveredItem] = useState(null);
