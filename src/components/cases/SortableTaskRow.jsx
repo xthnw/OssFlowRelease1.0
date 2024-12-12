@@ -306,7 +306,7 @@ export const SortableTaskRow = ({
                     e.stopPropagation();
                     setEditingCell({ taskId: task.id, field: 'dueDate' });
                 }}
-                className="block truncate cursor-text text-xs text-teal-600"
+                className="block truncate cursor-pointer text-xs text-teal-600"
             >
                 {date ? date.toLocaleDateString() : "-"}
             </span>

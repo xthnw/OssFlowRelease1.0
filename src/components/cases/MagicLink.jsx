@@ -132,8 +132,8 @@ export const MagicLinkDialog = ({ isOpen, onClose, taskId }) => {
                         onClick={generateLink}
                         className={`w-full flex justify-center items-center space-x-2 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
               ${isCopied
-                                ? 'bg-green-600 hover:bg-green-700'
-                                : 'bg-teal-600 hover:bg-teal-700'}`}
+                                ? 'bg-blue-600 hover:bg-blue-700'
+                                : 'bg-blue-600 hover:bg-blue-700'}`}
                     >
                         <Share2 className="h-4 w-4" />
                         <span>{isCopied ? 'Copied to Clipboard' : 'Generate Link'}</span>
