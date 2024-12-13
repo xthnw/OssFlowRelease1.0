@@ -1,6 +1,10 @@
 import React from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { TASKS_DATA } from '../data/tasksData';
+import { useState } from 'react';
+import dayjs from 'dayjs';
+import { MyTasks } from '../components/cases/MyTask';
 import {
     Clock,
     AlertCircle,
@@ -36,6 +40,10 @@ const StatsCard = ({ title, value, icon: Icon, trend, description }) => (
 );
 
 export const HomePage = () => {
+
+    const [tasksData, setTasksData] = useState(TASKS_DATA);
+
+
     const stats = [
         { title: 'Total Cases', value: '128', trend: 12, description: 'vs last month', icon: () => '📁' },
         { title: 'Active Tasks', value: '64', trend: -5, description: 'vs last month', icon: () => '✓' },
@@ -69,72 +77,15 @@ export const HomePage = () => {
         }
     ];
 
-    const myTasks = {
-        'To Do': [
-            { id: 1, title: 'Case 124 - Mandible reconstruction with fibula flap - Dr.แน็ก [รพ.พัทลุง]', dueDate: 'Today' },
-            { id: 2, title: 'Case 132 - Mandible cutting guide fabriction (SLA)', priority: 'polymer', dueDate: 'Tomorrow' }
-        ],
-        'Done': [
-            { id: 4, title: 'Case 122 - Femur cage - หมอวิช [คณะแพทย์ฯ มอ.]', priority: 'low', dueDate: 'Oct 15' }
-        ]
-    };
-
-    const recentProjects = [
-        { id: 1, name: 'Dental Case A', status: 'Manufacturing', progress: 75 },
-        { id: 2, name: 'Ortho Case B', status: 'Planning', progress: 30 },
-        { id: 3, name: 'Implant Case C', status: 'Design', progress: 45 }
-    ];
-
-    const upcomingDueDates = [
-        {
-            date: 'Oct 19', events: [
-                { title: 'Design Review', project: 'Case 124 - Mandible reconstruction with fibula flap - Dr.แน็ก [รพ.พัทลุง]' },
-                { title: 'Client Approval', project: 'Case 122 - Femur cage - หมอวิช [คณะแพทย์ฯ มอ.]' }
-            ]
-        },
-        {
-            date: 'Oct 20', events: [
-                { title: 'Final Delivery', project: 'Project C' }
-            ]
-        }
-    ];
-
     return (
-        <div className="p-6 overflow-y-scroll scrollbar">
+        <div className="flex-1 p-6 overflow-y-scroll scrollbar">
             <div className="space-y-6">
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Left Column - Tasks and Activities */}
                     <div className="md:col-span-2 space-y-6">
                         {/* My Tasks */}
-                        <div className="bg-white rounded-lg shadow-sm border p-4">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-lg font-medium">My Tasks</h2>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                {Object.entries(myTasks).map(([status, tasks]) => (
-                                    <div key={status} className="bg-gray-50 rounded-lg p-3">
-                                        <h3 className="text-sm font-medium mb-3">{status}</h3>
-                                        <div className="space-y-2">
-                                            {tasks.map((task) => (
-                                                <div
-                                                    key={task.id}
-                                                    className="bg-white p-3 rounded border shadow-sm"
-                                                >
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <span className="text-sm font-medium">{task.title}</span>
-                                                    </div>
-                                                    <div className="flex items-center text-xs text-gray-500">
-                                                        <Clock className="w-3 h-3 mr-1" />
-                                                        {task.dueDate}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <MyTasks tasksData={tasksData} />
 
                         {/* Recent Activities */}
                         <div className="bg-white rounded-lg shadow-sm border p-4">

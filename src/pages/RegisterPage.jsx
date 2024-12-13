@@ -36,38 +36,38 @@ export const RegisterPage = () => {
         switch (name) {
             case 'email':
                 if (!value) {
-                    error = 'กรุณากรอกอีเมล';
+                    error = 'Please enter an email';
                 } else if (!value.endsWith('@osslabs.com')) {
-                    error = 'กรุณาใช้อีเมลที่ลงท้ายด้วย @osslabs.com เท่านั้น';
+                    error = 'Email must end with @osslabs.com';
                 }
                 break;
             case 'password':
                 if (!value) {
-                    error = 'กรุณากรอกรหัสผ่าน';
+                    error = 'Please enter a password';
                 } else if (value.length < 8 || value.length > 100) {
-                    error = 'รหัสผ่านต้องมีความยาว 8-100 ตัวอักษร';
+                    error = 'Password must be 8-100 characters long';
                 } else if (!/[A-Z]/.test(value)) {
-                    error = 'ต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว';
+                    error = 'Must contain at least 1 uppercase letter';
                 } else if (!/[0-9]/.test(value)) {
-                    error = 'ต้องมีตัวเลขอย่างน้อย 1 ตัว';
+                    error = 'Must contain at least 1 number';
                 } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value)) {
-                    error = 'ต้องมีอักขระพิเศษอย่างน้อย 1 ตัว';
+                    error = 'Must contain at least 1 special character';
                 } else if (/[ <>\"\'\/]/.test(value)) {
-                    error = 'ห้ามใช้เว้นวรรคและอักขระพิเศษ < > " \' /';
+                    error = 'Cannot contain spaces or special characters < > " \' /';
                 }
                 break;
             case 'fullName':
-                if (!value) error = 'กรุณากรอกชื่อ-นามสกุล';
+                if (!value) error = 'Please enter your full name';
                 break;
             case 'phone':
                 if (!value) {
-                    error = 'กรุณากรอกเบอร์โทรศัพท์';
+                    error = 'Please enter a phone number';
                 } else if (!/^\d{10}$/.test(value)) {
-                    error = 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง';
+                    error = 'Please enter a valid phone number';
                 }
                 break;
             case 'departments':
-                if (!value.length) error = 'กรุณาเลือกแผนก';
+                if (!value.length) error = 'Please select a department';
                 break;
             default:
                 break;
@@ -82,7 +82,7 @@ export const RegisterPage = () => {
             if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
                 setErrors(prev => ({
                     ...prev,
-                    profileImage: 'กรุณาอัพโหลดไฟล์ .png, .jpg หรือ .jpeg เท่านั้น'
+                    profileImage: 'Please upload only .png, .jpg, or .jpeg files'
                 }));
                 return;
             }
@@ -103,7 +103,7 @@ export const RegisterPage = () => {
 
         // Here you would typically send the data to your API
         // For demo, we'll just show a success message
-        alert('กรุณาตรวจสอบอีเมลของคุณเพื่อยืนยันการสมัครสมาชิก');
+        alert('Please check your email to verify your registration');
         // Redirect to email verification page
         // window.location.href = '/verify-email';
     };
@@ -126,14 +126,14 @@ export const RegisterPage = () => {
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        สมัครสมาชิก
+                        Sign Up
                     </h2>
                 </div>
 
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">อีเมล</label>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
                         <div className="mt-1 relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                                 <Mail className="h-5 w-5 text-gray-400" />
@@ -157,7 +157,7 @@ export const RegisterPage = () => {
 
                     {/* Password */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">รหัสผ่าน</label>
+                        <label className="block text-sm font-medium text-gray-700">Password</label>
                         <div className="mt-1 relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                                 <Lock className="h-5 w-5 text-gray-400" />
@@ -180,7 +180,7 @@ export const RegisterPage = () => {
 
                     {/* Full Name */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">ชื่อ-นามสกุล</label>
+                        <label className="block text-sm font-medium text-gray-700">Full Name</label>
                         <div className="mt-1 relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                                 <User className="h-5 w-5 text-gray-400" />
@@ -203,7 +203,7 @@ export const RegisterPage = () => {
 
                     {/* Phone */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">เบอร์โทรศัพท์</label>
+                        <label className="block text-sm font-medium text-gray-700">Phone Number</label>
                         <div className="mt-1 relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                                 <Phone className="h-5 w-5 text-gray-400" />
@@ -226,7 +226,7 @@ export const RegisterPage = () => {
 
                     {/* Departments Multi-select */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">แผนก</label>
+                        <label className="block text-sm font-medium text-gray-700">Department</label>
                         <select
                             multiple
                             className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border ${errors.departments ? 'border-red-500' : 'border-gray-300'
@@ -242,7 +242,7 @@ export const RegisterPage = () => {
                                 <option key={dept} value={dept}>{dept}</option>
                             ))}
                         </select>
-                        <p className="mt-1 text-xs text-gray-500">กด Ctrl (Windows) หรือ Command (Mac) เพื่อเลือกหลายแผนก</p>
+                        <p className="mt-1 text-xs text-gray-500">Press Ctrl (Windows) or Command (Mac) to select multiple departments</p>
                         {errors.departments && touched.departments && (
                             <p className="mt-1 text-sm text-red-600">{errors.departments}</p>
                         )}
@@ -264,12 +264,12 @@ export const RegisterPage = () => {
                                 <option key={job} value={job}>{job}</option>
                             ))}
                         </select>
-                        <p className="mt-1 text-xs text-gray-500">กด Ctrl (Windows) หรือ Command (Mac) เพื่อเลือกหลาย Job Description</p>
+                        <p className="mt-1 text-xs text-gray-500">Press Ctrl (Windows) or Command (Mac) to select multiple positions</p>
                     </div>
 
                     {/* Profile Image Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">รูปโปรไฟล์</label>
+                        <label className="block text-sm font-medium text-gray-700">Profile Picture</label>
                         <div className="mt-1 flex items-center space-x-4">
                             <div className="flex-shrink-0 h-16 w-16 relative">
                                 {imagePreview ? (
@@ -285,7 +285,7 @@ export const RegisterPage = () => {
                                 )}
                             </div>
                             <label className="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                                <span>อัพโหลดรูป</span>
+                                <span>Upload image</span>
                                 <input
                                     type="file"
                                     className="sr-only"
@@ -297,7 +297,7 @@ export const RegisterPage = () => {
                         {errors.profileImage && (
                             <p className="mt-1 text-sm text-red-600">{errors.profileImage}</p>
                         )}
-                        <p className="mt-1 text-xs text-gray-500">รองรับไฟล์ .PNG, .JPG และ .JPEG</p>
+                        <p className="mt-1 text-xs text-gray-500">Supported formats: .PNG, .JPG, and .JPEG</p>
                     </div>
 
                     {/* Submit Button */}
@@ -310,15 +310,15 @@ export const RegisterPage = () => {
                                     ? 'bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500'
                                     : 'bg-gray-300 cursor-not-allowed'}`}
                         >
-                            สมัครสมาชิก
+                            Sign Up
                         </button>
                     </div>
 
                     {/* Login Link */}
                     <div className="text-center">
-                        <span className="text-sm text-gray-600">มีบัญชีอยู่แล้ว? </span>
+                        <span className="text-sm text-gray-600">Already have an account? </span>
                         <a href="/login" className="text-sm text-teal-600 hover:text-teal-500 font-medium">
-                            เข้าสู่ระบบ
+                            Login
                         </a>
                     </div>
                 </form>

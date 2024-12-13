@@ -277,6 +277,43 @@ export const ListView = () => {
         setKey(prev => prev + 1);
     }, []);
 
+    // เพิ่ม useEffect เพื่อตั้งค่าเริ่มต้นของ completedTasks
+    useEffect(() => {
+        // สร้าง object ใหม่สำหรับเก็บสถานะ completion
+        const initialCompletedTasks = {};
+
+        // วนลูปผ่านทุก status category
+        Object.values(TASKS_DATA).forEach(categoryTasks => {
+            categoryTasks.forEach(task => {
+                // เช็ค task หลัก
+                initialCompletedTasks[task.id] = task.isCompleted || false;
+
+                // เช็ค subtasks
+                if (task.subtasks) {
+                    task.subtasks.forEach(subtask => {
+                        initialCompletedTasks[subtask.id] = subtask.isCompleted || false;
+                    });
+                }
+            });
+        });
+
+        // อัพเดท state
+        setCompletedTasks(initialCompletedTasks);
+    }, []); // run เฉพาะตอน mount
+
+
+    // เพิ่มฟังก์ชันคำนวณ Progress
+    const calculateProgress = (task) => {
+        if (!task.subtasks || task.subtasks.length === 0) {
+            return completedTasks[task.id] ? 100 : 0;
+        }
+
+        const completedSubtasks = task.subtasks.filter(
+            subtask => completedTasks[subtask.id]
+        ).length;
+        return Math.round((completedSubtasks / task.subtasks.length) * 100);
+    };
+
     const handleDragEnd = (result) => {
         if (!result.destination) return;
 
@@ -382,14 +419,21 @@ export const ListView = () => {
             const taskList = newData[status];
             const taskIndex = taskList.findIndex(t => t.id === taskId);
 
+            // แปลง newDate ให้อยู่ในรูปแบบที่มีปีด้วย
+            const formattedDate = new Date(newDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
             if (taskIndex !== -1) {
-                taskList[taskIndex].dueDate = newDate;
+                taskList[taskIndex].dueDate = formattedDate;
             } else {
                 // Check in subtasks
                 for (const task of taskList) {
                     const subtaskIndex = task.subtasks?.findIndex(st => st.id === taskId);
                     if (subtaskIndex !== -1) {
-                        task.subtasks[subtaskIndex].dueDate = newDate;
+                        task.subtasks[subtaskIndex].dueDate = formattedDate;
                         break;
                     }
                 }
@@ -422,16 +466,13 @@ export const ListView = () => {
                                         }
                                     />
                                     <div className="flex items-center space-x-2">
-                                        <div
-                                            className="w-5 h-5 rounded-full"
-                                            style={{
-                                                background:
-                                                    status === "PLANNING AND DESIGN"
-                                                        ? "#FFD700"
-                                                        : "#E5E7EB",
-                                                opacity: 0.7,
-                                            }}
-                                        />
+                                        <div className="w-5 h-5 rounded-full flex items-center justify-center">
+                                            {status === "NEW COMING" && "🚧"}
+                                            {status === "PLANNING AND DESIGN" && "📐"}
+                                            {status === "IN PROGRESS" && "🚧"}
+                                            {status === "COMPLETED" && "✅"}
+                                            {status === "MANUFACTURING" && "🏭"}
+                                        </div>
                                         <span className="font-semibold text-gray-800">{status}</span>
                                     </div>
                                 </div>
@@ -444,7 +485,8 @@ export const ListView = () => {
                                 <>
                                     <div className="grid grid-cols-12 gap-4 px-6 py-2 border-b text-xs text-gray-500">
                                         <div className="col-span-4">Name</div>
-                                        <div className="col-span-2">Assignee</div>
+                                        <div className="col-span-1">Assignee</div>
+                                        <div className="col-span-1">Progress</div>
                                         <div className="col-span-1">Due date</div>
                                         <div className="col-span-1">Comments</div>
                                         <div className="col-span-1">Task Code</div>
@@ -484,6 +526,7 @@ export const ListView = () => {
                                                             setHoveredMember={setHoveredMember}
                                                             onShare={handleShare}
                                                             onDelete={handleDelete}
+                                                            calculateProgress={calculateProgress}
                                                         />
                                                         {expandedTasks[task.id] && task.subtasks?.length > 0 && (
                                                             <Droppable
@@ -521,6 +564,7 @@ export const ListView = () => {
                                                                                 hoveredMember={hoveredMember}
                                                                                 setHoveredMember={setHoveredMember}
                                                                                 onDelete={handleDelete}
+                                                                                calculateProgress={calculateProgress}
                                                                             />
                                                                         ))}
                                                                         {providedSubtask.placeholder}

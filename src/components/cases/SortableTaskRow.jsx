@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users, Share2, Trash2 } from 'lucide-react';
+import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users, Share2, Trash2, AlertTriangle } from 'lucide-react';
 import DatePicker from "react-datepicker";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/th'
+dayjs.extend(relativeTime);
+// dayjs.locale('th')
 import "react-datepicker/dist/react-datepicker.css";
 
 export const SortableTaskRow = ({
@@ -26,6 +31,7 @@ export const SortableTaskRow = ({
     hoveredMember,
     setHoveredMember,
     onShare,
+    calculateProgress
 
 }) => {
     const [activeDepartment, setActiveDepartment] = useState(null);
@@ -54,6 +60,21 @@ export const SortableTaskRow = ({
 
         // คำนวณเปอร์เซ็นต์
         return Math.round((memberTasks / totalTasks) * 100);
+    };
+
+    // เพิ่มฟังก์ชันใหม่สำหรับกำหนดสี
+    const getProgressColor = (percentage) => {
+        if (percentage <= 25) {
+            return 'bg-rose-500'; // สีแดงอมชมพู ดูนุ่มนวลกว่า
+        } else if (percentage <= 50) {
+            return 'bg-amber-500'; // สีส้มอ่อน ดูอบอุ่น
+        } else if (percentage <= 75) {
+            return 'bg-sky-500';  // สีฟ้าสดใส
+        } else if (percentage < 100) {
+            return 'bg-teal-400'; // สี teal อ่อน
+        } else {
+            return 'bg-teal-600'; // สี teal เข้ม ตามธีมหลัก
+        }
     };
 
     const renderAssigneeCell = () => {
@@ -280,6 +301,25 @@ export const SortableTaskRow = ({
         const isEditing = editingCell?.taskId === task.id && editingCell?.field === 'dueDate';
         const date = task.dueDate ? new Date(task.dueDate) : null;
 
+        // คำนวณวันที่เหลือ
+        const daysRemaining = date ? Math.floor((date.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : null;
+
+        // กำหนด style ตามจำนวนวันที่เหลือ
+        const getDateStyle = (days) => {
+            if (days === null) return 'text-gray-400';
+            if (days < 0) return 'text-red-500 font-medium';
+            if (days <= 2) return 'text-red-500 font-medium animate-pulse';
+            if (days <= 6) return 'text-orange-500 font-medium';
+            return 'text-gray-600';
+        };
+
+        const getAlertMessage = (days) => {
+            if (days < 0) return 'Due date has passed!';
+            if (days === 0) return 'Due today!';
+            if (days === 1) return 'Due tomorrow!';
+            return `Due in ${days} days`;
+        };
+
         if (isEditing) {
             return (
                 <div onClick={e => e.stopPropagation()}>
@@ -300,16 +340,51 @@ export const SortableTaskRow = ({
             );
         }
 
+        const dateString = date ? dayjs(date).fromNow() : "-";
+        const dateStyle = getDateStyle(daysRemaining);
+
         return (
-            <span
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setEditingCell({ taskId: task.id, field: 'dueDate' });
-                }}
-                className="block truncate cursor-pointer text-xs text-teal-600"
-            >
-                {date ? date.toLocaleDateString() : "-"}
-            </span>
+            <div className="relative group">
+                <span
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingCell({ taskId: task.id, field: 'dueDate' });
+                    }}
+                    className={`flex items-center gap-1 cursor-pointer text-xs ${dateStyle}`}
+                >
+                    {daysRemaining !== null && daysRemaining <= 6 && daysRemaining > 0 && (
+                        <AlertTriangle
+                            size={14}
+                            className="text-orange-500 animate-bounce"
+                        />
+                    )}
+                    {dateString}
+                </span>
+
+                {/* Tooltip */}
+                {daysRemaining !== null && daysRemaining <= 5 && (
+                    <div className="absolute hidden group-hover:block z-10 -top-12 left-0 w-48 p-2 bg-white shadow-lg rounded-lg border text-xs">
+                        <div className="flex items-center gap-2">
+                            <AlertTriangle
+                                size={14}
+                                className={daysRemaining <= 2 ? 'text-red-500' : 'text-orange-500'}
+                            />
+                            <div className="flex flex-col">
+                                <span className={daysRemaining <= 2 ? 'text-red-500' : 'text-orange-500'}>
+                                    {getAlertMessage(daysRemaining)}
+                                </span>
+                                <span className="text-gray-500">
+                                    {date.toLocaleDateString('en-US', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: 'numeric'
+                                    })}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         );
     };
 
@@ -372,8 +447,7 @@ export const SortableTaskRow = ({
                                 <GripVertical className="flex-shrink-0 w-4 h-4 text-gray-400 cursor-grab hover:text-gray-600 active:cursor-grabbing" />
                                 {!isSubtask && (
                                     <ChevronRight
-                                        className={`flex-shrink-0 w-4 h-4 text-gray-400 cursor-pointer transform ${expandedTasks[task.id] ? "rotate-90" : ""
-                                            }`}
+                                        className={`flex-shrink-0 w-4 h-4 text-gray-400 cursor-pointer transform ${expandedTasks[task.id] ? "rotate-90" : ""}`}
                                         onClick={() =>
                                             setExpandedTasks((prev) => ({
                                                 ...prev,
@@ -382,30 +456,33 @@ export const SortableTaskRow = ({
                                         }
                                     />
                                 )}
-                                <div
-                                    className="flex-shrink-0 w-4 h-4 rounded-full border-2 cursor-pointer flex items-center justify-center"
-                                    style={{
-                                        backgroundColor: isCompleted ? "#0D9488" : "transparent",
-                                        borderColor: isCompleted ? "#0D9488" : "#D1D5DB",
-                                    }}
-                                    onClick={() =>
-                                        setCompletedTasks((prev) => ({
-                                            ...prev,
-                                            [task.id]: !prev[task.id],
-                                        }))
-                                    }
-                                >
-                                    {isCompleted && (
-                                        <Check
-                                            className="w-[10px] h-[10px] text-white"
-                                            style={{
-                                                strokeWidth: 3,
-                                                strokeLinecap: "round",
-                                                strokeLinejoin: "round",
-                                            }}
-                                        />
-                                    )}
-                                </div>
+                                {/* เอา CheckBox ออกจากตรงนี้ และย้ายไปอยู่ในเงื่อนไข isSubtask */}
+                                {isSubtask && (
+                                    <div
+                                        className="flex-shrink-0 w-4 h-4 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                                        style={{
+                                            backgroundColor: isCompleted ? "#0D9488" : "transparent",
+                                            borderColor: isCompleted ? "#0D9488" : "#D1D5DB",
+                                        }}
+                                        onClick={() =>
+                                            setCompletedTasks((prev) => ({
+                                                ...prev,
+                                                [task.id]: !prev[task.id],
+                                            }))
+                                        }
+                                    >
+                                        {isCompleted && (
+                                            <Check
+                                                className="w-[10px] h-[10px] text-white"
+                                                style={{
+                                                    strokeWidth: 3,
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                )}
                                 <div className="flex-1 min-w-0"> {/* Wrapper for name */}
                                     {renderEditableCell('name', task.name)}
                                 </div>
@@ -417,10 +494,22 @@ export const SortableTaskRow = ({
                             </div>
                         </div>
 
-                        <div className="col-span-2 flex items-center">
+                        <div className="col-span-1 flex items-center">
                             {renderAssigneeCell()}
                         </div>
-                        <div className="col-span-1 text-xs text-teal-600 flex items-center">
+
+                        <div className="col-span-1 flex items-center">
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div
+                                    className={`${getProgressColor(calculateProgress(task))} h-2 rounded-full transition-all duration-300`}
+                                    style={{ width: `${calculateProgress(task)}%` }}
+                                />
+                            </div>
+                            <span className={`ml-2 text-xs text-gray-500 ${getProgressColor(calculateProgress(task)).replace('bg-', 'text-')}`}>
+                                {calculateProgress(task)}%
+                            </span>
+                        </div>
+                        <div className="col-span-1 text-xs text-gray-600 flex items-center">
                             {renderDateCell()}
                         </div>
                         <div className="col-span-1 text-xs text-gray-500 flex items-center">

@@ -37,7 +37,7 @@ export const LoginPage = () => {
       // Navigate to medical page
       navigate('/medical');
     } else {
-      alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+      alert('Invalid email or password');
     }
 
     // Handle remember me
@@ -63,14 +63,14 @@ export const LoginPage = () => {
           {/* Header */}
           <div className="flex items-center justify-center space-x-3">
             <UserPlus className="w-8 h-8 text-teal-600" />
-            <h2 className="text-2xl font-semibold text-gray-900">เข้าสู่ระบบ</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">Login</h2>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                อีเมล
+                Email
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -89,7 +89,7 @@ export const LoginPage = () => {
             {/* Password Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                รหัสผ่าน
+                Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -115,11 +115,11 @@ export const LoginPage = () => {
                   className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  จดจำฉัน
+                  Remember Me
                 </label>
               </div>
               <a href="#" className="text-sm text-teal-600 hover:text-teal-500">
-                ลืมรหัสผ่าน?
+              Forgot password?
               </a>
             </div>
 
@@ -128,15 +128,15 @@ export const LoginPage = () => {
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
             >
-              เข้าสู่ระบบ
+              Login
             </button>
           </form>
 
           {/* Register Link */}
           <div className="text-center">
-            <span className="text-sm text-gray-600">ยังไม่มีบัญชี? </span>
+            <span className="text-sm text-gray-600">No account? </span>
             <a href="register" className="text-sm text-teal-600 hover:text-teal-500 font-medium">
-              สมัครสมาชิก
+              Sign Up
             </a>
           </div>
         </div>
