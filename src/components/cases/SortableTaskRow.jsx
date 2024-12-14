@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users, Share2, Trash2, AlertTriangle } from 'lucide-react';
+import { UserPlus, Check, GripVertical, ChevronRight, Plus, Briefcase, Users, Share2, Trash2, AlertTriangle, MessageSquare } from 'lucide-react';
+import { COMMENTS_DATA } from '../../data/commentData';
 import DatePicker from "react-datepicker";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { SlideComment } from './SlideComment';
 import 'dayjs/locale/th'
 dayjs.extend(relativeTime);
 // dayjs.locale('th')
@@ -31,7 +33,11 @@ export const SortableTaskRow = ({
     hoveredMember,
     setHoveredMember,
     onShare,
-    calculateProgress
+    calculateProgress,
+    commentsOpen,
+    setCommentsOpen,
+    selectedTaskId,
+    setSelectedTaskId
 
 }) => {
     const [activeDepartment, setActiveDepartment] = useState(null);
@@ -512,8 +518,15 @@ export const SortableTaskRow = ({
                         <div className="col-span-1 text-xs text-gray-600 flex items-center">
                             {renderDateCell()}
                         </div>
-                        <div className="col-span-1 text-xs text-gray-500 flex items-center">
-                            {renderEditableCell('comments', task.comments || '-')}
+                        <div
+                            className="col-span-1 text-xs text-gray-900 flex items-center gap-1 cursor-pointer hover:text-blue-500"
+                            onClick={() => {
+                                setSelectedTaskId(task.id);
+                                setCommentsOpen(true);
+                            }}
+                        >
+                            <MessageSquare size={14} />
+                            {COMMENTS_DATA[task.id]?.length || 0}
                         </div>
                         <div className="col-span-1 text-xs font-medium text-gray-900 flex items-center">
                             {renderEditableCell('taskCode', task.taskCode || '-')}

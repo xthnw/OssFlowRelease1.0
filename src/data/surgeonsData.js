@@ -3,80 +3,80 @@ export const SURGEONS_DATA = [
         id: '1',
         name: 'นพ. สมชาย วงศ์สุวรรณ',
         hospitals: ['โรงพยาบาลกรุงเทพ', 'โรงพยาบาลบำรุงราษฎร์'],
-        email: 'somchai.w@hospital.com',
-        tel: '+66-81-234-5678',
+        email: 'somchai.w@osseolabs.com',
+        tel: '081-234-5678',
         notes: 'ผู้เชี่ยวชาญด้านศัลยกรรมทรวงอกและหัวใจ'
     },
     {
         id: '2',
         name: 'พญ. วิภา รุ่งเรืองกิจ',
         hospitals: ['โรงพยาบาลสมิติเวช', 'โรงพยาบาลบีเอ็นเอช'],
-        email: 'wipa.r@hospital.com',
-        tel: '+66-89-876-5432',
+        email: 'wipa.r@osseolabs.com',
+        tel: '089-876-5432',
         notes: 'ศัลยแพทย์กระดูกและข้อ เชี่ยวชาญด้านการเปลี่ยนข้อ'
     },
     {
         id: '3',
         name: 'นพ. ประวิทย์ ศรีนครินทร์',
         hospitals: ['โรงพยาบาลศิริราช', 'โรงพยาบาลจุฬาลงกรณ์'],
-        email: 'prawit.s@hospital.com',
-        tel: '+66-86-555-4444',
+        email: 'prawit.s@osseolabs.com',
+        tel: '086-555-4444',
         notes: 'ผู้เชี่ยวชาญด้านประสาทศัลยศาสตร์ เน้นการผ่าตัดกระดูกสันหลัง'
     },
     {
         id: '4',
         name: 'พญ. มาลี สุขสวัสดิ์',
         hospitals: ['โรงพยาบาลเปาโล', 'โรงพยาบาลพญาไท'],
-        email: 'malee.s@hospital.com',
-        tel: '+66-83-111-2222',
+        email: 'malee.s@osseolabs.com',
+        tel: '083-111-2222',
         notes: 'ผู้เชี่ยวชาญด้านศัลยกรรมตกแต่งและเสริมสร้าง'
     },
     {
         id: '5',
         name: 'นพ. ธนวัฒน์ สุวรรณโณ',
         hospitals: ['โรงพยาบาลรามาธิบดี', 'โรงพยาบาลตำรวจ'],
-        email: 'tanawat.s@hospital.com',
-        tel: '+66-82-999-8888',
+        email: 'tanawat.s@osseolabs.com',
+        tel: '082-999-8888',
         notes: 'เชี่ยวชาญด้านการผ่าตัดแผลเล็ก'
     },
     {
         id: '6',
         name: 'พญ. อรวรรณ พงษ์ไพบูลย์',
         hospitals: ['โรงพยาบาลกรุงเทพคริสเตียน', 'โรงพยาบาลบำรุงราษฎร์'],
-        email: 'orawan.p@hospital.com',
-        tel: '+66-84-777-6666',
+        email: 'orawan.p@osseolabs.com',
+        tel: '084-777-6666',
         notes: 'ผู้เชี่ยวชาญด้านศัลยกรรมเด็ก'
     },
     {
         id: '7',
         name: 'นพ. ประกิต วงศ์วิทย์',
         hospitals: ['โรงพยาบาลเวชธานี', 'โรงพยาบาลสมิติเวช'],
-        email: 'prakit.w@hospital.com',
-        tel: '+66-85-444-3333',
+        email: 'prakit.w@osseolabs.com',
+        tel: '085-444-3333',
         notes: 'เชี่ยวชาญด้านศัลยกรรมกระดูกและข้อเท้า'
     },
     {
         id: '8',
         name: 'พญ. สุนันทา จิตรักษา',
         hospitals: ['โรงพยาบาลธนบุรี', 'โรงพยาบาลกรุงเทพ'],
-        email: 'sunanta.j@hospital.com',
-        tel: '+66-81-222-3333',
+        email: 'sunanta.j@osseolabs.com',
+        tel: '081-222-3333',
         notes: 'ผู้เชี่ยวชาญด้านศัลยกรรมมือและไมโคร'
     },
     {
         id: '9',
         name: 'นพ. วิชิต บุญเกื้อ',
         hospitals: ['โรงพยาบาลศิริราช', 'โรงพยาบาลรามาธิบดี'],
-        email: 'wichit.b@hospital.com',
-        tel: '+66-89-123-4567',
+        email: 'wichit.b@osseolabs.com',
+        tel: '089-123-4567',
         notes: 'เชี่ยวชาญด้านศัลยกรรมกระดูกสันหลัง'
     },
     {
         id: '10',
         name: 'พญ. นภาพร ใจดี',
         hospitals: ['โรงพยาบาลจุฬาลงกรณ์', 'โรงพยาบาลพญาไท'],
-        email: 'napaporn.j@hospital.com',
-        tel: '+66-86-888-9999',
+        email: 'napaporn.j@osseolabs.com',
+        tel: '086-888-9999',
         notes: 'ผู้เชี่ยวชาญด้านศัลยกรรมเต้านมและมะเร็ง'
     }
 ];

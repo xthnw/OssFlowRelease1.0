@@ -6,6 +6,7 @@ import { TASKS_DATA } from '../../data/tasksData';
 // แยก SortableTaskRow เป็น component แยก
 import { SortableTaskRow } from './SortableTaskRow';
 import { MagicLinkDialog } from './MagicLink';
+import { SlideComment } from './SlideComment';
 
 export const ListView = () => {
     const [tasksData, setTasksData] = useState(TASKS_DATA);
@@ -26,6 +27,7 @@ export const ListView = () => {
 
     const [isMagicLinkOpen, setIsMagicLinkOpen] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
+    const [commentsOpen, setCommentsOpen] = useState(false);
     const handleShare = (taskId) => {
         setSelectedTaskId(taskId);
         setIsMagicLinkOpen(true);
@@ -527,6 +529,10 @@ export const ListView = () => {
                                                             onShare={handleShare}
                                                             onDelete={handleDelete}
                                                             calculateProgress={calculateProgress}
+                                                            commentsOpen={commentsOpen}
+                                                            setCommentsOpen={setCommentsOpen}
+                                                            selectedTaskId={selectedTaskId}
+                                                            setSelectedTaskId={setSelectedTaskId}
                                                         />
                                                         {expandedTasks[task.id] && task.subtasks?.length > 0 && (
                                                             <Droppable
@@ -565,6 +571,11 @@ export const ListView = () => {
                                                                                 setHoveredMember={setHoveredMember}
                                                                                 onDelete={handleDelete}
                                                                                 calculateProgress={calculateProgress}
+
+                                                                                commentsOpen={commentsOpen}
+                                                                                setCommentsOpen={setCommentsOpen}
+                                                                                selectedTaskId={selectedTaskId}
+                                                                                setSelectedTaskId={setSelectedTaskId}
                                                                             />
                                                                         ))}
                                                                         {providedSubtask.placeholder}
@@ -593,6 +604,11 @@ export const ListView = () => {
                                         }}
                                         taskId={selectedTaskId}
                                     />
+                                    <SlideComment
+                                        taskId={selectedTaskId}
+                                        isOpen={commentsOpen}
+                                        onClose={() => setCommentsOpen(false)}
+                                    />
                                 </>
                             )}
                         </div>
@@ -600,5 +616,6 @@ export const ListView = () => {
                 </div>
             </div>
         </DragDropContext>
+
     );
 };
