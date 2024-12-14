@@ -81,7 +81,6 @@ export const HomePage = () => {
         <div className="flex-1 p-6 overflow-y-scroll scrollbar">
             <div className="space-y-6">
                 {/* Main Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Left Column - Tasks and Activities */}
                     <div className="md:col-span-2 space-y-6">
                         {/* My Tasks */}
@@ -113,36 +112,7 @@ export const HomePage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
     );
 };

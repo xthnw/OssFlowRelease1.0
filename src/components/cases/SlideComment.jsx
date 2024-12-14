@@ -84,7 +84,7 @@ export const SlideComment = ({ taskId, isOpen, onClose }) => {
                 id: `c${Date.now()}`,
                 taskId,
                 userId: "currentUser",
-                userName: "Current User",
+                userName: "Janwimon Kaewwilai",
                 userAvatar: "/avatars/avatar1.jpg",
                 content: replyContent,
                 timestamp: new Date().toISOString(),
@@ -112,7 +112,7 @@ export const SlideComment = ({ taskId, isOpen, onClose }) => {
                 id: `c${Date.now()}`,
                 taskId,
                 userId: "currentUser",
-                userName: "Current User",
+                userName: "Janwimon Kaewwilai",
                 userAvatar: "/avatars/avatar1.jpg",
                 content: newComment,
                 timestamp: new Date().toISOString(),
@@ -261,7 +261,7 @@ export const SlideComment = ({ taskId, isOpen, onClose }) => {
                                                                         ...c,
                                                                         reactions: c.reactions.map(r =>
                                                                             r.type === type
-                                                                                ? { ...r, users: [...r.users, { id: 'currentUser', name: 'Current User' }] }
+                                                                                ? { ...r, users: [...r.users, { id: 'currentUser', name: 'Janwimon Kaewwilai' }] }
                                                                                 : r
                                                                         )
                                                                     };
@@ -271,7 +271,7 @@ export const SlideComment = ({ taskId, isOpen, onClose }) => {
                                                                         reactions: [...(c.reactions || []), {
                                                                             type,
                                                                             label,
-                                                                            users: [{ id: 'currentUser', name: 'Current User' }]
+                                                                            users: [{ id: 'currentUser', name: 'Janwimon Kaewwilai' }]
                                                                         }]
                                                                     };
                                                                 }

@@ -21,7 +21,7 @@ export const COMMENTS_DATA = {
             id: "c2",
             taskId: "125",
             userId: "u3",
-            userName: "Mary Johnson",
+            userName: "Sajaporn Sansira",
             userAvatar: "/avatars/avatar2.jpg",
             content: "@Janwimon Kaewwilai เดี๋ยวช่วย review ให้บ่ายนี้นะ",
             timestamp: "2024-12-13T09:15:00Z",
@@ -39,24 +39,7 @@ export const COMMENTS_DATA = {
             id: "c3",
             taskId: "125",
             userId: "u3",
-            userName: "Mary Johnson",
-            userAvatar: "/avatars/avatar3.jpg",
-            content: "@Janwimon Kaewwilai เดี๋ยวช่วย review ให้บ่ายนี้นะ",
-            timestamp: "2024-12-13T09:15:00Z",
-            mentions: ["u1"],
-            reactions: [
-                {
-                    type: "checkCircle",
-                    label: "การเสร็จสิ้น",
-                    users: [{ id: "u1", name: "Janwimon Kaewwilai" }]
-                }
-            ]
-        },
-        {
-            id: "c4",
-            taskId: "125",
-            userId: "u3",
-            userName: "Mary Johnson",
+            userName: "Sajaporn Sansira",
             userAvatar: "/avatars/avatar3.jpg",
             content: "@Janwimon Kaewwilai เดี๋ยวช่วย review ให้บ่ายนี้นะ",
             timestamp: "2024-12-13T09:15:00Z",
@@ -74,7 +57,7 @@ export const COMMENTS_DATA = {
             taskId: "125",
             userId: "u4",
             userName: "OssFlow System",
-            userAvatar: "/avatars/avatar1.jpg",
+            userAvatar: "/avatars/avatar4.jpg",
             content: "Case Status Changed from \n@Manufacturing to Delivery",
             timestamp: "2024-12-13T08:30:00Z",
             mentions: [],

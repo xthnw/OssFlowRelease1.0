@@ -163,7 +163,7 @@ export const MagicLinkPreview = () => {
                 </div>
 
                 {/* Simulation Controls (for demo only) */}
-                <div className="mt-6 bg-white rounded-lg p-4 border">
+                {/* <div className="mt-6 bg-white rounded-lg p-4 border">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         Simulate Status
                     </label>
@@ -178,7 +178,7 @@ export const MagicLinkPreview = () => {
                             </option>
                         ))}
                     </select>
-                </div>
+                </div> */}
             </div>
         </div>
     );

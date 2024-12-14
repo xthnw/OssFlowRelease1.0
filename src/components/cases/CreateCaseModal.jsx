@@ -339,7 +339,7 @@ export const CreateCaseModal = ({ isOpen, onClose }) => {
                 {/* Modal Footer */}
                 <div className="p-4 border-t">
                     <button
-                        className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md"
+                        className="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-md"
                         onClick={handleCreate}
                     >
                         Create Case
