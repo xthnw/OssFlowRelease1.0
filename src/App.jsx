@@ -15,11 +15,15 @@ import { RegisterPage } from './pages/RegisterPage';
 import { Merge } from './/components/Merge';
 import { MagicLinkPreview } from './pages/MagicLinkPreview';
 import { DashboardPage } from './pages/DashboardPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { SetPasswordPage } from './pages/SetPasswordPage';
+import { IntroPage } from './pages/IntroPage';
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+      <Route path="/" element={<IntroPage />} />
+      <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
       <Route path="/dashboard" element={<MainLayout><DashboardPage /></MainLayout>} />
       <Route path="/medical" element={<MainLayout><MedicalDevicePage /></MainLayout>} />
       <Route path="/hospitals" element={<MainLayout><HospitalsPage /></MainLayout>} />
@@ -27,6 +31,8 @@ export default function App() {
       <Route path="/team" element={<MainLayout><TeamPage /></MainLayout>} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot" element={<ForgotPasswordPage />} />
+      <Route path="/setpassword" element={<SetPasswordPage />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mergeallfortest" element={<Merge />} />
       <Route path="/track/:taskId" element={<MagicLinkPreview />} />

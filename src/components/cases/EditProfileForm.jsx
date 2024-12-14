@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserCircle } from 'lucide-react';
 
 export const EditProfileForm = ({ user, onSave }) => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: user.name,
         phone: user.phone,
@@ -116,7 +118,7 @@ export const EditProfileForm = ({ user, onSave }) => {
                     {/* Job Description - Read only */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Job Description
+                            Job Description
                         </label>
                         <input
                             type="text"
@@ -127,11 +129,25 @@ export const EditProfileForm = ({ user, onSave }) => {
                     </div>
                 </div>
 
-                {/* Submit Button */}
-                <div className="flex justify-end">
+                {/* Action Buttons */}
+                <div className="flex justify-between items-center">
+                    {/* Logout Button */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            localStorage.removeItem('isAuthenticated');
+                            localStorage.removeItem('userEmail');
+                            navigate('/login');
+                        }}
+                        className="px-4 py-2 bg-black text-white rounded-md hover:bg-red-600 text-sm font-medium"
+                    >
+                        Logout
+                    </button>
+
+                    {/* Save Button */}
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm font-medium"
+                        className="px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 text-sm font-medium"
                     >
                         Save changes
                     </button>

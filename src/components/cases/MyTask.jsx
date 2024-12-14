@@ -54,13 +54,13 @@ export const MyTasks = ({ tasksData }) => {
     const getDateStyle = (dueDate) => {
         if (!dueDate) return 'text-gray-500';
         
-        const daysRemaining = Math.ceil(
+        const daysRemaining = Math.floor(
             (new Date(dueDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
         );
 
-        if (daysRemaining < 0) return 'text-red-500';
-        if (daysRemaining <= 2) return 'text-red-500';
-        if (daysRemaining <= 5) return 'text-orange-500';
+        // if (daysRemaining < 0) return 'text-red-500';
+        // if (daysRemaining <= 2) return 'text-red-500';
+        // if (daysRemaining <= 5) return 'text-orange-500';
         return 'text-gray-500';
     };
 

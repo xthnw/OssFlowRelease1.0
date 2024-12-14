@@ -23,9 +23,9 @@ export const Sidebar = ({ setShowCreateCase }) => {
                 {!isCollapsed && (
                     <div className="flex items-center space-x-2">
                         <img
-                            src="https://res.cloudinary.com/djgpgveds/image/upload/v1733062717/jdzga0vkqkswho3wgsan.png"
+                            src="https://res.cloudinary.com/djgpgveds/image/upload/v1734166491/shqwramxt9rb5x0h4vom.png"
                             alt="OssFlow Logo"
-                            className="object-contain"
+                            className="w-24 object-contain"
                         />
                         {/* <span className="font-medium">OssFlow</span> */}
                     </div>
@@ -37,7 +37,7 @@ export const Sidebar = ({ setShowCreateCase }) => {
 
             {/* Navigation */}
             <div className="flex-1 p-2 space-y-1 mt-4 relative">
-                <Link to="/" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+                <Link to="/home" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
                     <Home className="w-4 h-4" />
                     {!isCollapsed && <span className="text-sm">Home</span>}
                 </Link>

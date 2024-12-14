@@ -2,12 +2,10 @@ import { AlertTriangle } from 'lucide-react';
 import dayjs from 'dayjs';
 
 export const UpcomingDueDates = ({ tasksData }) => {
-    // แปลงข้อมูลจาก TASKS_DATA ให้อยู่ในรูปแบบที่ต้องการ
     const getAllTasks = () => {
         const allTasks = [];
         Object.values(tasksData).forEach(statusTasks => {
             statusTasks.forEach(task => {
-                // เพิ่ม main task
                 if (task.dueDate) {
                     allTasks.push({
                         id: task.id,
@@ -16,7 +14,6 @@ export const UpcomingDueDates = ({ tasksData }) => {
                         project: `${task.taskCode} - ${task.surgeon} [${task.hospital}]`
                     });
                 }
-                // เพิ่ม subtasks
                 if (task.subtasks) {
                     task.subtasks.forEach(subtask => {
                         if (subtask.dueDate) {
@@ -31,86 +28,104 @@ export const UpcomingDueDates = ({ tasksData }) => {
                 }
             });
         });
-
-        // เรียงตามวันที่ใกล้สุด
         return allTasks.sort((a, b) => a.dueDate - b.dueDate);
     };
 
     const getDateStyle = (daysRemaining) => {
-        if (daysRemaining < 0) return 'text-red-500 font-medium';
-        if (daysRemaining <= 2) return 'text-red-500 font-medium';
-        if (daysRemaining <= 5) return 'text-orange-500 font-medium';
-        return 'text-gray-500';
+        if (daysRemaining < 0) return 'text-red-600 font-medium';
+        if (daysRemaining === 0) return 'text-red-500 font-medium';
+        if (daysRemaining === 1) return 'text-red-400 font-medium';
+        if (daysRemaining === 2) return 'text-orange-500 font-medium';
+        if (daysRemaining === 3) return 'text-orange-400 font-medium';
+        if (daysRemaining === 4) return 'text-yellow-500 font-medium';
+        return 'text-yellow-400 font-medium';
     };
 
     const tasks = getAllTasks();
 
-    return (
-        <div className="bg-white rounded-lg shadow-sm border p-4">
-            <h2 className="text-lg font-medium mb-4">Upcoming Due Dates</h2>
-            <div className="space-y-4 max-h-[600px] overflow-y-scroll scrollbar">
-                {tasks.map((task) => {
-                    const daysRemaining = Math.ceil(
-                        (task.dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
-                    );
+    const getTasksByGroup = (days) => {
+        return tasks.filter(task => {
+            const daysRemaining = Math.floor(
+                (task.dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+            );
+            return daysRemaining === days;
+        });
+    };
 
-                    // แสดงเฉพาะงานที่ยังไม่เลยกำหนดเกิน 5 วัน
-                    if (daysRemaining > 5) return null;
+    const getOverdueTasks = () => {
+        return tasks.filter(task => {
+            const daysRemaining = Math.floor(
+                (task.dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+            );
+            return daysRemaining < 0;
+        });
+    };
 
-                    return (
-                        <div key={task.id} className="group relative">
-                            <div className="bg-gray-50 p-3 rounded hover:bg-gray-100 transition-colors cursor-pointer">
-                                <div className="flex items-center gap-2">
-                                    {daysRemaining <= 5 && (
-                                        <AlertTriangle
-                                            size={16}
-                                            className={`${daysRemaining <= 2 ? 'text-red-500' : 'text-orange-500'} 
-                                                      ${daysRemaining <= 2 ? 'animate-bounce' : ''}`}
-                                        />
-                                    )}
-                                    <div className="flex-1">
-                                        <div className="text-sm font-medium">{task.title}</div>
-                                        <div className="text-xs text-gray-500">{task.project}</div>
-                                        <div className={`text-xs mt-1 ${getDateStyle(daysRemaining)}`}>
-                                            {dayjs(task.dueDate).fromNow()}
-                                        </div>
-                                    </div>
+    const TaskContainer = ({ title, tasks, bgColor }) => (
+        <div className="bg-white rounded-lg p-4 shadow-sm border">
+            <h3 className="text-lg font-medium mb-3">{title}</h3>
+            <div className="space-y-2 h-[400px] overflow-y-scroll scrollbar">
+                {tasks.map((task) => (
+                    <div key={task.id} className="group relative">
+                        <div className={`bg-white rounded-lg p-3 hover:bg-gray-50 transition-colors cursor-pointer border-1 ${bgColor.replace('bg-', 'border-')}`}>
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle size={16} className={getDateStyle(Math.floor(
+                                    (task.dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                                ))} />
+                                <div className="flex-1">
+                                    <div className="text-sm font-medium">{task.title}</div>
+                                    <div className="text-xs text-gray-500">{task.project}</div>
+                                    <div className="text-xs mt-1">{dayjs(task.dueDate).fromNow()}</div>
                                 </div>
                             </div>
-
-                            {/* Tooltip */}
-                            {/* {daysRemaining <= 5 && (
-                                <div className="absolute hidden group-hover:block z-10 -top-12 left-0 w-48 p-2 bg-white shadow-lg rounded-lg border text-xs">
-                                    <div className="flex items-center gap-2">
-                                        <AlertTriangle
-                                            size={14}
-                                            className={daysRemaining <= 2 ? 'text-red-500' : 'text-orange-500'}
-                                        />
-                                        <div className="flex flex-col">
-                                            <span className={daysRemaining <= 2 ? 'text-red-500' : 'text-orange-500'}>
-                                                {daysRemaining < 0
-                                                    ? 'Due date has passed!'
-                                                    : daysRemaining === 0
-                                                        ? 'Due today!'
-                                                        : daysRemaining === 1
-                                                            ? 'Due tomorrow!'
-                                                            : `Due in ${daysRemaining} days`}
-                                            </span>
-                                            <span className="text-gray-500">
-                                                {task.dueDate.toLocaleDateString('en-US', {
-                                                    month: 'short',
-                                                    day: 'numeric',
-                                                    year: 'numeric'
-                                                })}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )} */}
                         </div>
-                    );
-                })}
+                    </div>
+                ))}
             </div>
+        </div>
+    );
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="md:col-span-2 lg:col-span-3">
+                {getOverdueTasks().length > 0 && (
+                    <TaskContainer
+                        title="Overdue Tasks"
+                        tasks={getOverdueTasks()}
+                        bgColor="bg-red-700"
+                    />
+                )}
+            </div>
+            <TaskContainer
+                title="Today"
+                tasks={getTasksByGroup(0)}
+                bgColor="bg-red-600"
+            />
+            <TaskContainer
+                title="Tomorrow"
+                tasks={getTasksByGroup(1)}
+                bgColor="bg-red-500"
+            />
+            <TaskContainer
+                title="In 2 Days"
+                tasks={getTasksByGroup(2)}
+                bgColor="bg-orange-500"
+            />
+            <TaskContainer
+                title="In 3 Days"
+                tasks={getTasksByGroup(3)}
+                bgColor="bg-orange-400"
+            />
+            <TaskContainer
+                title="In 4 Days"
+                tasks={getTasksByGroup(4)}
+                bgColor="bg-yellow-500"
+            />
+            <TaskContainer
+                title="In 5 Days"
+                tasks={getTasksByGroup(5)}
+                bgColor="bg-yellow-400"
+            />
         </div>
     );
 };

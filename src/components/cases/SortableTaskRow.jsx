@@ -519,14 +519,22 @@ export const SortableTaskRow = ({
                             {renderDateCell()}
                         </div>
                         <div
-                            className="col-span-1 text-xs text-gray-900 flex items-center gap-1 cursor-pointer hover:text-blue-500"
-                            onClick={() => {
-                                setSelectedTaskId(task.id);
-                                setCommentsOpen(true);
-                            }}
+                            className="col-span-1 text-xs text-gray-900 flex items-center gap-1"
                         >
-                            <MessageSquare size={14} />
-                            {COMMENTS_DATA[task.id]?.length || 0}
+                            {!isSubtask ? (
+                                <div
+                                    className="flex items-center gap-1 cursor-pointer hover:text-blue-500"
+                                    onClick={() => {
+                                        setSelectedTaskId(task.id);
+                                        setCommentsOpen(true);
+                                    }}
+                                >
+                                    <MessageSquare size={14} />
+                                    {COMMENTS_DATA[task.id]?.length || 0}
+                                </div>
+                            ) : (
+                                <div className="w-[22px]" />
+                            )}
                         </div>
                         <div className="col-span-1 text-xs font-medium text-gray-900 flex items-center">
                             {renderEditableCell('taskCode', task.taskCode || '-')}

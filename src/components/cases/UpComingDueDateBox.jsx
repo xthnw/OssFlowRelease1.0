@@ -39,19 +39,20 @@ export const UpcomingDueDateBox = ({ tasksData }) => {
         if (days === 1) return 'Tomorrow';
         return `in ${days} days`;
     };
-
     const getColorClass = (days) => {
         switch (days) {
             case 0:
-                return 'bg-red-50 border-red-200 text-red-700';
+                return 'bg-red-600 border-red-700 text-white';
             case 1:
-                return 'bg-orange-50 border-orange-200 text-orange-700';
+                return 'bg-red-500 border-red-600 text-white';
             case 2:
-                return 'bg-yellow-50 border-yellow-200 text-yellow-700';
+                return 'bg-orange-500 border-orange-600 text-white';
             case 3:
-                return 'bg-blue-50 border-blue-200 text-blue-700';
+                return 'bg-orange-400 border-orange-500 text-white';
+            case 4:
+                return 'bg-yellow-500 border-yellow-600 text-white';
             default:
-                return 'bg-gray-50 border-gray-200 text-gray-700';
+                return 'bg-yellow-400 border-yellow-500 text-white';
         }
     };
 

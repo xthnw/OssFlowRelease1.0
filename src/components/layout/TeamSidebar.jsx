@@ -37,7 +37,7 @@ export const TeamSidebar = ({ setShowCreateCase }) => {
 
             {/* Navigation */}
             <div className="flex-1 p-2 space-y-1 mt-4 relative">
-                <Link to="/" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
+                <Link to="/home" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
                     <Home className="w-4 h-4" />
                     {!isCollapsed && <span className="text-sm">Home</span>}
                 </Link>
@@ -45,10 +45,45 @@ export const TeamSidebar = ({ setShowCreateCase }) => {
                     <CircleGauge className="w-4 h-4" />
                     {!isCollapsed && <span className="text-sm">Dashboard</span>}
                 </Link>
-                <Link to="/team" className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center space-x-2">
-                    <Users className="w-4 h-4" />
-                    {!isCollapsed && <span className="text-sm">People</span>}
-                </Link>
+                <button
+                    className="w-full p-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center justify-between"
+                    onClick={() => setExpandedProjects(!expandedProjects)}
+                >
+                    <div className="flex items-center space-x-2">
+                        <Folder className="w-4 h-4" />
+                        {!isCollapsed && <span className="text-sm">Case</span>}
+                    </div>
+                    {!isCollapsed && (
+                        expandedProjects ?
+                            <ChevronDown className="w-4 h-4 text-gray-400" /> :
+                            <ChevronRight className="w-4 h-4 text-gray-400" />
+                    )}
+                </button>
+
+                {!isCollapsed && expandedProjects && (
+                    <div className="ml-4 space-y-1 mt-1">
+                        {MOCK_DATA.projects
+                            .filter(project => project.id === "medical")
+                            .map((project) => (
+                                <div
+                                    key={project.id}
+                                    className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100"
+                                    onMouseEnter={() => setHoveredItem(project.id)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                >
+                                    <Link to={`/${project.id}`} className="text-sm truncate">
+                                        {project.name}
+                                    </Link>
+                                    {hoveredItem === project.id && (
+                                        <Plus
+                                            className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer"
+                                            onClick={() => handleAddClick(project.id)}
+                                        />
+                                    )}
+                                </div>
+                            ))}
+                    </div>
+                )}
             </div>
         </div>
     )

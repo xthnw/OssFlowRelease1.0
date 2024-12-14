@@ -117,7 +117,7 @@ export const TeamCollaborationNetwork = ({ tasksData }) => {
             <div className="relative w-full h-[300px]">
                 <svg className="w-full h-full">
                     {/* Links */}
-                    {links.map((link, i) => {
+                    {/* {links.map((link, i) => {
                         const sourceNode = nodes.find(n => n.id === link.source);
                         const targetNode = nodes.find(n => n.id === link.target);
                         if (!sourceNode || !targetNode) return null;
@@ -132,10 +132,10 @@ export const TeamCollaborationNetwork = ({ tasksData }) => {
                                 className={`stroke-purple-300 ${getLinkStrength(link.strength)}`}
                             />
                         );
-                    })}
+                    })} */}
 
                     {/* Nodes */}
-                    {nodes.map(node => (
+                    {/* {nodes.map(node => (
                         <g key={node.id}>
                             <circle
                                 cx={node.x}
@@ -153,7 +153,7 @@ export const TeamCollaborationNetwork = ({ tasksData }) => {
                                 {node.id.split(' ')[0]}
                             </text>
                         </g>
-                    ))}
+                    ))} */}
                 </svg>
             </div>
 
