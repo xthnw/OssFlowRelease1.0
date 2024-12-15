@@ -7,6 +7,8 @@ import { TASKS_DATA } from '../../data/tasksData';
 import { SortableTaskRow } from './SortableTaskRow';
 import { MagicLinkDialog } from './MagicLink';
 import { SlideComment } from './SlideComment';
+import { AddTaskModal } from './AddTaskModal';
+import { AddSubTaskModal } from './AddSubTaskModal';
 
 export const ListView = () => {
     const [tasksData, setTasksData] = useState(TASKS_DATA);
@@ -25,8 +27,28 @@ export const ListView = () => {
     const [hoveredProject, setHoveredProject] = useState(null);
     const [hoveredMember, setHoveredMember] = useState(null);  // เพิ่มบรรทัดนี้
 
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
     const [isMagicLinkOpen, setIsMagicLinkOpen] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+    const [isAddSubtaskModalOpen, setIsAddSubtaskModalOpen] = useState(false);
+
+    const [templates, setTemplates] = useState([
+        {
+            id: 1,
+            name: "Set 1",
+            subtasks: [
+                "Surgical Planning confirmation",
+                "Surgical guide design",
+                "Reconstruction plate design",
+                "Mock up model fabrication",
+                "Mandible cutting guide fabrication"
+            ]
+        }
+    ]);
+
+
     const [commentsOpen, setCommentsOpen] = useState(false);
     const handleShare = (taskId) => {
         setSelectedTaskId(taskId);
@@ -491,7 +513,7 @@ export const ListView = () => {
                                         <div className="col-span-1">Progress</div>
                                         <div className="col-span-1">Due date</div>
                                         <div className="col-span-1">Comments</div>
-                                        <div className="col-span-1">Task Code</div>
+                                        <div className="col-span-1">Case Code</div>
                                         <div className="col-span-1">Surgeons</div>
                                         <div className="col-span-1">Hospitals</div>
                                         <div className="col-span-1">Actions</div>
@@ -546,6 +568,7 @@ export const ListView = () => {
                                                                         className={`bg-gray-50 ${snapshotSubtask.isDraggingOver ? 'bg-blue-50' : ''
                                                                             }`}
                                                                     >
+
                                                                         {task.subtasks?.map((subtask, subtaskIndex) => (
                                                                             <SortableTaskRow
                                                                                 key={subtask.id}
@@ -579,9 +602,21 @@ export const ListView = () => {
                                                                             />
                                                                         ))}
                                                                         {providedSubtask.placeholder}
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                setSelectedTaskId(task.id);  // เก็บ ID ของ task หลัก
+                                                                                setIsAddSubtaskModalOpen(true);
+                                                                            }}
+                                                                            className="flex items-center space-x-1 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md w-full"
+                                                                        >
+                                                                            <Plus className="w-4 h-4" />
+                                                                            <span>Add Task</span>
+                                                                        </button>
                                                                     </div>
+
                                                                 )}
                                                             </Droppable>
+
                                                         )}
                                                     </React.Fragment>
                                                 ))}
@@ -591,9 +626,11 @@ export const ListView = () => {
                                     </Droppable>
 
                                     <div className="p-2">
-                                        <button className="flex items-center space-x-1 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md w-full">
+                                        <button
+                                            onClick={() => setIsAddModalOpen(true)}
+                                            className="flex items-center space-x-1 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md w-full">
                                             <Plus className="w-4 h-4" />
-                                            <span>Add Task</span>
+                                            <span>Add Case</span>
                                         </button>
                                     </div>
                                     <MagicLinkDialog
@@ -603,6 +640,18 @@ export const ListView = () => {
                                             setSelectedTaskId(null);
                                         }}
                                         taskId={selectedTaskId}
+                                    />
+                                    <AddTaskModal
+                                        isOpen={isAddModalOpen}
+                                        onClose={() => setIsAddModalOpen(false)}
+                                        templates={templates}
+                                        setTemplates={setTemplates}
+                                    />
+                                    <AddSubTaskModal
+                                        isOpen={isAddSubtaskModalOpen}
+                                        onClose={() => setIsAddSubtaskModalOpen(false)}
+                                        templates={templates}  // templates state จาก AddTaskModal
+                                        selectedTaskId={selectedTaskId}
                                     />
                                     <SlideComment
                                         taskId={selectedTaskId}

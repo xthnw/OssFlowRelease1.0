@@ -23,9 +23,9 @@ export const TeamSidebar = ({ setShowCreateCase }) => {
                 {!isCollapsed && (
                     <div className="flex items-center space-x-2">
                         <img
-                            src="https://res.cloudinary.com/djgpgveds/image/upload/v1733062717/jdzga0vkqkswho3wgsan.png"
+                            src="https://res.cloudinary.com/djgpgveds/image/upload/v1734166491/shqwramxt9rb5x0h4vom.png"
                             alt="OssFlow Logo"
-                            className="object-contain"
+                            className="w-24 object-contain"
                         />
                         {/* <span className="font-medium">OssFlow</span> */}
                     </div>
